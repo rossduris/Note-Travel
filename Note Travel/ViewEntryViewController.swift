@@ -19,10 +19,15 @@ class ViewEntryViewController: UIViewController, NSFetchedResultsControllerDeleg
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var addPlacesButton:UIButton!
     @IBOutlet weak var startWithPhotosButton:UIButton!
-    @IBOutlet weak var buttonWrapperView:UIView!
     @IBOutlet weak var toggleButton:UIBarButtonItem!
     @IBOutlet weak var tableView:UITableView!
+    @IBOutlet weak var buttonWrapperView:UIView!
+    @IBOutlet weak var newEntryView: UIView!
+
+
     
+    var selectedLocation:String?
+    var searchString:String!
     var entry: Entry!
     
     
@@ -52,11 +57,23 @@ class ViewEntryViewController: UIViewController, NSFetchedResultsControllerDeleg
         super.viewDidLoad()
     
         mapView.delegate = self
+   
         
-        tableView.delegate = self
-        tableView.dataSource = self
+        print("here")
+        print(selectedLocation)
         
         configureUI()
+        
+        if entry == nil {
+            setTabBarHidden(true)
+            buttonWrapperView.hidden = false
+            navigationController?.navigationBar.hidden = true
+            
+            //searchBar.hidden = true
+
+        } else {
+            //searchBar.hidden = false
+        }
         
         zoomToLocation()
     }
@@ -96,9 +113,8 @@ class ViewEntryViewController: UIViewController, NSFetchedResultsControllerDeleg
     //Center and zoom on map to entry location
     func zoomToLocation() {
         let geocoder = CLGeocoder()
-        let address = entry.title
         
-        geocoder.geocodeAddressString(address) { (placemarks, error) -> Void in
+        geocoder.geocodeAddressString(selectedLocation!) { (placemarks, error) -> Void in
             if error != nil {
                 //self.toggleLoading(false, indicator: self.geoActivityIndicator, view: self.view)
                 if error!.localizedDescription.rangeOfString("2") != nil{
@@ -142,6 +158,7 @@ class ViewEntryViewController: UIViewController, NSFetchedResultsControllerDeleg
     func hideKeyboard(gestureRecognizer:UIGestureRecognizer) {
         print("hide")
         searchBar.resignFirstResponder()
+        //setTabBarHidden(true)
     }
     
     func toggleMap(){
@@ -165,7 +182,7 @@ class ViewEntryViewController: UIViewController, NSFetchedResultsControllerDeleg
     }
     
     @IBAction func didPressCancelButton(){
-        entry.newEntry = false
+
         //sharedContext.insertObject(entry)
         saveContext()
         navigationController?.popToRootViewControllerAnimated(false)
@@ -173,8 +190,8 @@ class ViewEntryViewController: UIViewController, NSFetchedResultsControllerDeleg
     
     func configureUI(){
         //Configure Navigation Controller
-        navigationController?.navigationItem.title = entry.title
-        tabBarController?.title = entry.title
+        navigationController?.navigationItem.title = searchString
+        tabBarController?.title = searchString
         
         // Configure LongPress Gesture
         let tap = UITapGestureRecognizer(target: self, action: "hideKeyboard:")
@@ -185,24 +202,91 @@ class ViewEntryViewController: UIViewController, NSFetchedResultsControllerDeleg
         //Hide table view
         tableView.hidden = true
     }
+    
+    @IBAction func didTouchStartWithPhotosButton(){
+        navigationController?.navigationBar.hidden = false
+        startWithPhotosButton.hidden = true
+        addPlacesButton.hidden = true
+        searchBar.frame.origin.y -= 220
+        tableView.frame.origin.y += 44
+        mapView.frame = view.frame
+        buttonWrapperView.hidden = true
+        tabBarController?.selectedIndex = 1
+        
+        setTabBarHidden(false)
+        
+        searchBar.hidden = false
+
+    }
+    
+    @IBAction func didTouchStartWithSearchButton(){
+        print("touhcy")
+        navigationController?.navigationBar.hidden = false
+
+        locationLabel.hidden = true
+        cancelButton.hidden = true
+        buttonWrapperView.hidden = true
+
+        
+        setTabBarHidden(false)
+        showSearchBar()
+        expandMap()
+ 
+        //searchBar.becomeFirstResponder()
+    }
+    
+    func expandMap(){
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.mapView.frame = self.view.frame
+        })
+    }
+    
+    func showSearchBar(){
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+            self.searchBar.frame.origin.y += 108
+        })
+    }
+    
+    func setTabBarHidden (bool:Bool){
+        for view in tabBarController!.view.subviews {
+            if (view.isKindOfClass(UITabBar)){
+                let tabBar = view as! UITabBar
+                UIView.animateWithDuration(0.3, animations: { () -> Void in
+                    var offset = CGFloat(50)
+                    if (bool == false){
+                        offset = -50;
+                    }
+                    tabBar.frame = CGRect(origin: CGPointMake(tabBar.frame.origin.x, tabBar.frame.origin.y + offset), size: tabBar.frame.size)
+                })
+            }
+        }
+    }
 
     override func viewDidLayoutSubviews() {
-        if entry.newEntry == false {
+        
+        if selectedLocation != nil {
+            locationLabel.text = selectedLocation
+            //navigationController?.navigationBar.hidden = true
+            
+            mapView.frame.origin.y += 220
+            searchBar.frame.origin.y -= 64
+            tabBarController?.title = selectedLocation
+            searchString = selectedLocation
+
+        } else {
+
+            navigationController?.navigationBar.hidden = false
             locationLabel.hidden = true
             cancelButton.hidden = true
-            navigationController?.title = entry.title
+            tabBarController?.title = entry.title
             navigationItem.rightBarButtonItem = nil
-            startWithPhotosButton.hidden = true
-            addPlacesButton.hidden = true
+            buttonWrapperView.hidden = true
+            
             locationLabelTwo.hidden = true
             searchBar.frame.origin.y -= 220
-            tableView.frame.origin.y += 44
+            tableView.frame.origin.y += 50
             mapView.frame = view.frame
-        } else {
-            locationLabel.text = entry.title
-            navigationController?.navigationBar.hidden = true
-            startWithPhotosButton.hidden = false
-            addPlacesButton.hidden = false
+            searchString = entry.title
         }
         
         let toggleButton =  UIBarButtonItem(image: UIImage(named: "list"), style: UIBarButtonItemStyle.Plain, target: self, action: "toggleMap")

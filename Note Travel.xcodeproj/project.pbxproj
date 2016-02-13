@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		0DD119B81C63F83500B2EAB4 /* PhotoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD119B71C63F83500B2EAB4 /* PhotoCollectionViewController.swift */; };
 		0DD119BE1C652E2B00B2EAB4 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD119BD1C652E2B00B2EAB4 /* PhotoCell.swift */; };
+		0DD119C01C67E77400B2EAB4 /* GoogleClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD119BF1C67E77400B2EAB4 /* GoogleClient.swift */; };
+		0DD119C21C6AFE2A00B2EAB4 /* EntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD119C11C6AFE2A00B2EAB4 /* EntryCell.swift */; };
+		0DD119C61C6BF3CF00B2EAB4 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD119C51C6BF3CF00B2EAB4 /* SearchCell.swift */; };
+		0DD119C81C6D256A00B2EAB4 /* EditEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD119C71C6D256A00B2EAB4 /* EditEntryViewController.swift */; };
+		0DD119CA1C6DEBF400B2EAB4 /* FindPlacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD119C91C6DEBF400B2EAB4 /* FindPlacesViewController.swift */; };
 		0DD549EC1C3DE81300C3473B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD549EB1C3DE81300C3473B /* AppDelegate.swift */; };
 		0DD549EE1C3DE81300C3473B /* EntryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD549ED1C3DE81300C3473B /* EntryTableViewController.swift */; };
 		0DD549F11C3DE81300C3473B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0DD549EF1C3DE81300C3473B /* Main.storyboard */; };
@@ -43,6 +48,11 @@
 /* Begin PBXFileReference section */
 		0DD119B71C63F83500B2EAB4 /* PhotoCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewController.swift; sourceTree = "<group>"; };
 		0DD119BD1C652E2B00B2EAB4 /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		0DD119BF1C67E77400B2EAB4 /* GoogleClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleClient.swift; sourceTree = "<group>"; };
+		0DD119C11C6AFE2A00B2EAB4 /* EntryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryCell.swift; sourceTree = "<group>"; };
+		0DD119C51C6BF3CF00B2EAB4 /* SearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
+		0DD119C71C6D256A00B2EAB4 /* EditEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditEntryViewController.swift; sourceTree = "<group>"; };
+		0DD119C91C6DEBF400B2EAB4 /* FindPlacesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindPlacesViewController.swift; sourceTree = "<group>"; };
 		0DD549E81C3DE81300C3473B /* Note Travel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Note Travel.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DD549EB1C3DE81300C3473B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0DD549ED1C3DE81300C3473B /* EntryTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryTableViewController.swift; sourceTree = "<group>"; };
@@ -119,10 +129,15 @@
 				0DD549EB1C3DE81300C3473B /* AppDelegate.swift */,
 				0DD54A1E1C48592900C3473B /* CoreDataStackManager.swift */,
 				0DD549ED1C3DE81300C3473B /* EntryTableViewController.swift */,
+				0DD119C71C6D256A00B2EAB4 /* EditEntryViewController.swift */,
+				0DD119C91C6DEBF400B2EAB4 /* FindPlacesViewController.swift */,
 				0DD54A221C485B0800C3473B /* ViewEntryViewController.swift */,
 				0DD119B71C63F83500B2EAB4 /* PhotoCollectionViewController.swift */,
 				0DD119BD1C652E2B00B2EAB4 /* PhotoCell.swift */,
+				0DD119C51C6BF3CF00B2EAB4 /* SearchCell.swift */,
+				0DD119C11C6AFE2A00B2EAB4 /* EntryCell.swift */,
 				0DD54A201C48597B00C3473B /* Entry.swift */,
+				0DD119BF1C67E77400B2EAB4 /* GoogleClient.swift */,
 				0DD549EF1C3DE81300C3473B /* Main.storyboard */,
 				0DD549F51C3DE81300C3473B /* Assets.xcassets */,
 				0DD549F71C3DE81300C3473B /* LaunchScreen.storyboard */,
@@ -350,9 +365,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				0DD54A211C48597C00C3473B /* Entry.swift in Sources */,
+				0DD119C61C6BF3CF00B2EAB4 /* SearchCell.swift in Sources */,
+				0DD119C21C6AFE2A00B2EAB4 /* EntryCell.swift in Sources */,
+				0DD119C01C67E77400B2EAB4 /* GoogleClient.swift in Sources */,
 				0DD549EE1C3DE81300C3473B /* EntryTableViewController.swift in Sources */,
 				0DD549F41C3DE81300C3473B /* Note_Travel.xcdatamodeld in Sources */,
 				0DD54A231C485B0800C3473B /* ViewEntryViewController.swift in Sources */,
+				0DD119C81C6D256A00B2EAB4 /* EditEntryViewController.swift in Sources */,
+				0DD119CA1C6DEBF400B2EAB4 /* FindPlacesViewController.swift in Sources */,
 				0DD119BE1C652E2B00B2EAB4 /* PhotoCell.swift in Sources */,
 				0DD54A1F1C48592900C3473B /* CoreDataStackManager.swift in Sources */,
 				0DD549EC1C3DE81300C3473B /* AppDelegate.swift in Sources */,

@@ -26,7 +26,11 @@ class PhotoCollectionViewController: UIViewController, UICollectionViewDataSourc
         
         imagePicker.delegate = self
 
-        // Do any additional setup after loading the view.
+        if photos.isEmpty {
+            openImagePickerAlbum()
+        }
+        
+        navigationController?.navigationBar.hidden = false
     }
 
     override func viewWillAppear(animated: Bool) {
@@ -37,6 +41,7 @@ class PhotoCollectionViewController: UIViewController, UICollectionViewDataSourc
     }
  
     override func viewDidLayoutSubviews() {
+
         let addButton =  UIBarButtonItem(image: UIImage(named: "plus"), style: UIBarButtonItemStyle.Plain,
             target: self, action: "openImagePickerAlbum")
         
