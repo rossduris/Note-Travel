@@ -85,13 +85,7 @@ strip_invalid_archs() {
 
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-Note Travel/Alamofire.framework"
-  install_framework "Pods-Note Travel/BSGridCollectionViewLayout.framework"
-  install_framework "Pods-Note Travel/BSImagePicker.framework"
-  install_framework "Pods-Note Travel/UIImageViewModeScaleAspect.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-Note Travel/Alamofire.framework"
-  install_framework "Pods-Note Travel/BSGridCollectionViewLayout.framework"
-  install_framework "Pods-Note Travel/BSImagePicker.framework"
-  install_framework "Pods-Note Travel/UIImageViewModeScaleAspect.framework"
 fi

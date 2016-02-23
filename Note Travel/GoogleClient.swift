@@ -6,7 +6,6 @@
 //  Copyright © 2016 duris.io. All rights reserved.
 //
 
-import Foundation
 import Alamofire
 import MapKit
 
@@ -15,6 +14,7 @@ class GoogleClient: NSObject {
     let API_KEY = "AIzaSyCbdkg0q6Hq7BdfRexcBCzBN2U5bbCwWcQ"
     let BASE_URL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?"
     let PLACE_SEARCH = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?rankby=distance"
+    let PLACE_ADD = "https://maps.googleapis.com/maps/api/place/add/json?"
     
     
     

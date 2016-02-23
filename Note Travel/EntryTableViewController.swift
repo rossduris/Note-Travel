@@ -84,7 +84,6 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
             } else {
                 //do nothing
             }
-
         } else {
             //dragging up
             if wrapVisible == false{
@@ -108,7 +107,6 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
                 self.newEntryButtonWrapper.frame.origin.y -= 56
             })
         }
-        
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -135,7 +133,6 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
         editBarButton.title = ""
         newEntryButtonWrapper.hidden = false
         searchResulstsTableView.hidden = true
-        
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
@@ -160,12 +157,6 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
         
     }
     
-    
-    
-    
-    /*
-    Fetched Entries Controller
-    */
     func resignKeyboard(gestureRecognizer: UIGestureRecognizer){
         entryTitleTextField.resignFirstResponder()
     }
@@ -227,15 +218,10 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
         } else  {
             print(searchResults.count)
             return searchResults.count
-            
         }
-
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        
-        
-        
         
         if tableView == travelTableView {
             let cell = tableView.dequeueReusableCellWithIdentifier("travelCell", forIndexPath: indexPath) as! EntryCell
@@ -249,7 +235,6 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
             
             print(searchResults.count)
             cell.textLabel?.text = searchResults[indexPath.row] as? String
-
             
             return cell
         }
@@ -258,21 +243,8 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
 
         
-        
-//        if tableView == travelTableView {
-//            newEntry = false
-//            performSegueWithIdentifier("toTabController", sender: self)
-//        } else  {
-//            searchBar.endEditing(true)
-//            searchResulstsTableView.hidden = true
-//            searchBar.text = ""
-//            newEntryButtonWrapper.hidden = false
-//            searchBar.hidden = true
-//            editBarButton.title = ""
-//        }
-        
         if tableView == travelTableView {
-            let vc = storyboard?.instantiateViewControllerWithIdentifier("EditEntryViewController") as! EditEntryViewController
+            let vc = storyboard?.instantiateViewControllerWithIdentifier("ViewEntryViewController") as! ViewEntryViewController
             let entry = fetchedEntriesController.objectAtIndexPath(indexPath) as! Entry
             vc.entry = entry
             navigationController?.pushViewController(vc, animated: true)
@@ -291,12 +263,11 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
             let entry = Entry(dictionary: dictionary, context: sharedContext)
             saveContext()
             print("the title \(entry.title)")
-            let vc = storyboard?.instantiateViewControllerWithIdentifier("EditEntryViewController") as! EditEntryViewController
+            let vc = storyboard?.instantiateViewControllerWithIdentifier("ViewEntryViewController") as! ViewEntryViewController
             vc.entry = entry
             navigationController?.pushViewController(vc, animated: true)
         }
     }
-    
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
         
@@ -313,54 +284,12 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        
-        if segue.identifier == "toTabController" {
-            let tabBarC = segue.destinationViewController as! UITabBarController
-            let desinationView: ViewEntryViewController = tabBarC.viewControllers?.first as! ViewEntryViewController
-            
-            if newEntry {
-                print(entryTitleTextField.text)
-                desinationView.selectedLocation = entryTitleTextField.text
-            } else {
-                let indexPath = travelTableView!.indexPathForSelectedRow!
-                desinationView.entry = fetchedEntriesController.objectAtIndexPath(indexPath) as! Entry
-            }
-            
-            
-//            if newEntry{
-//                print("new entry")
-//                print(tempEntry)
-//                tempEntry.newEntry = true
-//                desinationView.entry = tempEntry
-//            } else {
-//                print("previous entry")
-//                let indexPath = travelTableView!.indexPathForSelectedRow!
-//                let entry = fetchedEntriesController.objectAtIndexPath(indexPath) as! Entry
-//                entry.newEntry = false
-//                desinationView.entry = entry
-//            }
-        }
-    }
-    
 
     @IBAction func didPressNewEntry() {
         newEntryButtonWrapper.hidden = true
         searchBar.becomeFirstResponder()
     }
-    
-    @IBAction func addEntry(){
-        if entryTitleTextField.text != "" {
-            
-            entryTitleTextField.resignFirstResponder()
-            //entryTitleTextField.text = ""
-            
-            newEntry = true
-            
-            performSegueWithIdentifier("toTabController", sender: self)
-        }
-        
-    }
+
     
     func loading(force:Bool) {
         if force {

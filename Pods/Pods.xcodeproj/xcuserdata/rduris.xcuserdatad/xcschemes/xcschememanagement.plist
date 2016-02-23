@@ -9,27 +9,7 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>BSGridCollectionViewLayout.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>BSImagePicker-BSImagePicker.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>BSImagePicker.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>Pods-Note Travel.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>UIImageViewModeScaleAspect.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -37,32 +17,12 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>0FF38C485BD8E73F614C919F834D6EAB</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>432ECC54282C84882B482CCB4CF227FC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8AA3DDB8797222294E1288CB197A8347</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>ABBB46140DB2C0881A1670C28299CF5E</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>C59EE95662AD4757E7FCE220DB1AFA41</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>F7DE5171AA3C53DA4E4A078B795C78EE</key>
+		<key>8349B358C7D26D29219EDD754EB8BC57</key>
 		<dict>
 			<key>primary</key>
 			<true/>

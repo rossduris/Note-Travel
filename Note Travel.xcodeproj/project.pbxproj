@@ -7,12 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		0DD119B81C63F83500B2EAB4 /* PhotoCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD119B71C63F83500B2EAB4 /* PhotoCollectionViewController.swift */; };
-		0DD119BE1C652E2B00B2EAB4 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD119BD1C652E2B00B2EAB4 /* PhotoCell.swift */; };
+		0DB981D91C72C7BD003D0034 /* ViewPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB981D81C72C7BD003D0034 /* ViewPlaceViewController.swift */; };
+		0DB981DB1C72C930003D0034 /* FoursquareClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB981DA1C72C930003D0034 /* FoursquareClient.swift */; };
+		0DB981DF1C73A0BD003D0034 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB981DE1C73A0BD003D0034 /* Place.swift */; };
+		0DB981E31C742C81003D0034 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB981E21C742C81003D0034 /* Photo.swift */; };
+		0DB982081C7BE861003D0034 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB982071C7BE861003D0034 /* ImageCache.swift */; };
 		0DD119C01C67E77400B2EAB4 /* GoogleClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD119BF1C67E77400B2EAB4 /* GoogleClient.swift */; };
 		0DD119C21C6AFE2A00B2EAB4 /* EntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD119C11C6AFE2A00B2EAB4 /* EntryCell.swift */; };
 		0DD119C61C6BF3CF00B2EAB4 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD119C51C6BF3CF00B2EAB4 /* SearchCell.swift */; };
-		0DD119C81C6D256A00B2EAB4 /* EditEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD119C71C6D256A00B2EAB4 /* EditEntryViewController.swift */; };
+		0DD119C81C6D256A00B2EAB4 /* ViewEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD119C71C6D256A00B2EAB4 /* ViewEntryViewController.swift */; };
 		0DD119CA1C6DEBF400B2EAB4 /* FindPlacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD119C91C6DEBF400B2EAB4 /* FindPlacesViewController.swift */; };
 		0DD549EC1C3DE81300C3473B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD549EB1C3DE81300C3473B /* AppDelegate.swift */; };
 		0DD549EE1C3DE81300C3473B /* EntryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD549ED1C3DE81300C3473B /* EntryTableViewController.swift */; };
@@ -24,7 +27,6 @@
 		0DD54A0F1C3DE81400C3473B /* Note_TravelUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD54A0E1C3DE81400C3473B /* Note_TravelUITests.swift */; };
 		0DD54A1F1C48592900C3473B /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD54A1E1C48592900C3473B /* CoreDataStackManager.swift */; };
 		0DD54A211C48597C00C3473B /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD54A201C48597B00C3473B /* Entry.swift */; };
-		0DD54A231C485B0800C3473B /* ViewEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD54A221C485B0800C3473B /* ViewEntryViewController.swift */; };
 		9843B8F8E9A62E7E3FB37CCE /* Pods_Note_Travel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928BE4E7BF09FCF763BBB3EA /* Pods_Note_Travel.framework */; };
 /* End PBXBuildFile section */
 
@@ -46,12 +48,24 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0DD119B71C63F83500B2EAB4 /* PhotoCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewController.swift; sourceTree = "<group>"; };
-		0DD119BD1C652E2B00B2EAB4 /* PhotoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		0DB981D81C72C7BD003D0034 /* ViewPlaceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewPlaceViewController.swift; sourceTree = "<group>"; };
+		0DB981DA1C72C930003D0034 /* FoursquareClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FoursquareClient.swift; sourceTree = "<group>"; };
+		0DB981DE1C73A0BD003D0034 /* Place.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
+		0DB981E21C742C81003D0034 /* Photo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		0DB981E61C74CE18003D0034 /* AFNetworking.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AFNetworking.framework; path = "Pods/../build/Debug-iphoneos/AFNetworking.framework"; sourceTree = "<group>"; };
+		0DB981E81C74CE22003D0034 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		0DB981EA1C74CE2A003D0034 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		0DB981EC1C74CE32003D0034 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		0DB981EE1C74CE3C003D0034 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		0DB981F01C74CE4B003D0034 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		0DB981F31C74CF57003D0034 /* Pods_Note_Travel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods_Note_Travel.framework; path = "Pods/../build/Debug-iphoneos/Pods_Note_Travel.framework"; sourceTree = "<group>"; };
+		0DB981F51C74CF82003D0034 /* Pods.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods.framework; path = "../../../Library/Developer/Xcode/DerivedData/Yelp-bxtniongdmkwaffeqxfoirqlskhl/Build/Products/Debug-iphoneos/Pods.framework"; sourceTree = "<group>"; };
+		0DB982001C74E4BF003D0034 /* Note Travel-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Note Travel-Bridging-Header.h"; sourceTree = "<group>"; };
+		0DB982071C7BE861003D0034 /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		0DD119BF1C67E77400B2EAB4 /* GoogleClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleClient.swift; sourceTree = "<group>"; };
 		0DD119C11C6AFE2A00B2EAB4 /* EntryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryCell.swift; sourceTree = "<group>"; };
 		0DD119C51C6BF3CF00B2EAB4 /* SearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
-		0DD119C71C6D256A00B2EAB4 /* EditEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditEntryViewController.swift; sourceTree = "<group>"; };
+		0DD119C71C6D256A00B2EAB4 /* ViewEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewEntryViewController.swift; sourceTree = "<group>"; };
 		0DD119C91C6DEBF400B2EAB4 /* FindPlacesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindPlacesViewController.swift; sourceTree = "<group>"; };
 		0DD549E81C3DE81300C3473B /* Note Travel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Note Travel.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		0DD549EB1C3DE81300C3473B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -69,7 +83,6 @@
 		0DD54A101C3DE81400C3473B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0DD54A1E1C48592900C3473B /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStackManager.swift; sourceTree = "<group>"; };
 		0DD54A201C48597B00C3473B /* Entry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
-		0DD54A221C485B0800C3473B /* ViewEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewEntryViewController.swift; sourceTree = "<group>"; };
 		68EBF90D908BC5F59A3DB1AB /* Pods-Note Travel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Note Travel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Note Travel/Pods-Note Travel.debug.xcconfig"; sourceTree = "<group>"; };
 		928BE4E7BF09FCF763BBB3EA /* Pods_Note_Travel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Note_Travel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3198B1FF12C66C6ACC3E28E /* Pods-Note Travel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Note Travel.release.xcconfig"; path = "Pods/Target Support Files/Pods-Note Travel/Pods-Note Travel.release.xcconfig"; sourceTree = "<group>"; };
@@ -101,12 +114,62 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0DB981DC1C739CCE003D0034 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				0DD119BF1C67E77400B2EAB4 /* GoogleClient.swift */,
+				0DB981DA1C72C930003D0034 /* FoursquareClient.swift */,
+			);
+			name = API;
+			sourceTree = "<group>";
+		};
+		0DB981DD1C739CF4003D0034 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0DD54A1E1C48592900C3473B /* CoreDataStackManager.swift */,
+				0DB982071C7BE861003D0034 /* ImageCache.swift */,
+				0DD54A201C48597B00C3473B /* Entry.swift */,
+				0DB981E21C742C81003D0034 /* Photo.swift */,
+				0DB981DE1C73A0BD003D0034 /* Place.swift */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		0DB981E01C73B9DF003D0034 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				0DD549ED1C3DE81300C3473B /* EntryTableViewController.swift */,
+				0DD119C71C6D256A00B2EAB4 /* ViewEntryViewController.swift */,
+				0DD119C91C6DEBF400B2EAB4 /* FindPlacesViewController.swift */,
+				0DB981D81C72C7BD003D0034 /* ViewPlaceViewController.swift */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		0DB981E11C73BA1B003D0034 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				0DD119C51C6BF3CF00B2EAB4 /* SearchCell.swift */,
+				0DD119C11C6AFE2A00B2EAB4 /* EntryCell.swift */,
+			);
+			name = View;
+			sourceTree = "<group>";
+		};
+		0DB981FB1C74D269003D0034 /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				0DD54A021C3DE81400C3473B /* Note TravelTests */,
+				0DD54A0D1C3DE81400C3473B /* Note TravelUITests */,
+			);
+			name = Tests;
+			path = "Note Travel";
+			sourceTree = "<group>";
+		};
 		0DD549DF1C3DE81300C3473B = {
 			isa = PBXGroup;
 			children = (
 				0DD549EA1C3DE81300C3473B /* Note Travel */,
-				0DD54A021C3DE81400C3473B /* Note TravelTests */,
-				0DD54A0D1C3DE81400C3473B /* Note TravelUITests */,
+				0DB981FB1C74D269003D0034 /* Tests */,
 				0DD549E91C3DE81300C3473B /* Products */,
 				337DEC22204710E8375B82FA /* Pods */,
 				76B27AF50906EE93DFF5318D /* Frameworks */,
@@ -127,21 +190,15 @@
 			isa = PBXGroup;
 			children = (
 				0DD549EB1C3DE81300C3473B /* AppDelegate.swift */,
-				0DD54A1E1C48592900C3473B /* CoreDataStackManager.swift */,
-				0DD549ED1C3DE81300C3473B /* EntryTableViewController.swift */,
-				0DD119C71C6D256A00B2EAB4 /* EditEntryViewController.swift */,
-				0DD119C91C6DEBF400B2EAB4 /* FindPlacesViewController.swift */,
-				0DD54A221C485B0800C3473B /* ViewEntryViewController.swift */,
-				0DD119B71C63F83500B2EAB4 /* PhotoCollectionViewController.swift */,
-				0DD119BD1C652E2B00B2EAB4 /* PhotoCell.swift */,
-				0DD119C51C6BF3CF00B2EAB4 /* SearchCell.swift */,
-				0DD119C11C6AFE2A00B2EAB4 /* EntryCell.swift */,
-				0DD54A201C48597B00C3473B /* Entry.swift */,
-				0DD119BF1C67E77400B2EAB4 /* GoogleClient.swift */,
+				0DB981DD1C739CF4003D0034 /* Model */,
+				0DB981E11C73BA1B003D0034 /* View */,
+				0DB981E01C73B9DF003D0034 /* Controller */,
+				0DB981DC1C739CCE003D0034 /* API */,
 				0DD549EF1C3DE81300C3473B /* Main.storyboard */,
 				0DD549F51C3DE81300C3473B /* Assets.xcassets */,
 				0DD549F71C3DE81300C3473B /* LaunchScreen.storyboard */,
 				0DD549FA1C3DE81300C3473B /* Info.plist */,
+				0DB982001C74E4BF003D0034 /* Note Travel-Bridging-Header.h */,
 				0DD549F21C3DE81300C3473B /* Note_Travel.xcdatamodeld */,
 			);
 			path = "Note Travel";
@@ -154,7 +211,7 @@
 				0DD54A051C3DE81400C3473B /* Info.plist */,
 			);
 			path = "Note TravelTests";
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		0DD54A0D1C3DE81400C3473B /* Note TravelUITests */ = {
 			isa = PBXGroup;
@@ -163,7 +220,7 @@
 				0DD54A101C3DE81400C3473B /* Info.plist */,
 			);
 			path = "Note TravelUITests";
-			sourceTree = "<group>";
+			sourceTree = SOURCE_ROOT;
 		};
 		337DEC22204710E8375B82FA /* Pods */ = {
 			isa = PBXGroup;
@@ -177,6 +234,14 @@
 		76B27AF50906EE93DFF5318D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				0DB981F51C74CF82003D0034 /* Pods.framework */,
+				0DB981F31C74CF57003D0034 /* Pods_Note_Travel.framework */,
+				0DB981F01C74CE4B003D0034 /* SystemConfiguration.framework */,
+				0DB981EE1C74CE3C003D0034 /* Security.framework */,
+				0DB981EC1C74CE32003D0034 /* MobileCoreServices.framework */,
+				0DB981EA1C74CE2A003D0034 /* Foundation.framework */,
+				0DB981E81C74CE22003D0034 /* CoreGraphics.framework */,
+				0DB981E61C74CE18003D0034 /* AFNetworking.framework */,
 				928BE4E7BF09FCF763BBB3EA /* Pods_Note_Travel.framework */,
 			);
 			name = Frameworks;
@@ -253,6 +318,7 @@
 				TargetAttributes = {
 					0DD549E71C3DE81300C3473B = {
 						CreatedOnToolsVersion = 7.2;
+						DevelopmentTeam = ADENBUBR2U;
 					};
 					0DD549FE1C3DE81400C3473B = {
 						CreatedOnToolsVersion = 7.2;
@@ -369,14 +435,16 @@
 				0DD119C21C6AFE2A00B2EAB4 /* EntryCell.swift in Sources */,
 				0DD119C01C67E77400B2EAB4 /* GoogleClient.swift in Sources */,
 				0DD549EE1C3DE81300C3473B /* EntryTableViewController.swift in Sources */,
+				0DB981DB1C72C930003D0034 /* FoursquareClient.swift in Sources */,
 				0DD549F41C3DE81300C3473B /* Note_Travel.xcdatamodeld in Sources */,
-				0DD54A231C485B0800C3473B /* ViewEntryViewController.swift in Sources */,
-				0DD119C81C6D256A00B2EAB4 /* EditEntryViewController.swift in Sources */,
+				0DB981D91C72C7BD003D0034 /* ViewPlaceViewController.swift in Sources */,
+				0DB981DF1C73A0BD003D0034 /* Place.swift in Sources */,
+				0DD119C81C6D256A00B2EAB4 /* ViewEntryViewController.swift in Sources */,
 				0DD119CA1C6DEBF400B2EAB4 /* FindPlacesViewController.swift in Sources */,
-				0DD119BE1C652E2B00B2EAB4 /* PhotoCell.swift in Sources */,
+				0DB982081C7BE861003D0034 /* ImageCache.swift in Sources */,
+				0DB981E31C742C81003D0034 /* Photo.swift in Sources */,
 				0DD54A1F1C48592900C3473B /* CoreDataStackManager.swift in Sources */,
 				0DD549EC1C3DE81300C3473B /* AppDelegate.swift in Sources */,
-				0DD119B81C63F83500B2EAB4 /* PhotoCollectionViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -519,10 +587,16 @@
 			baseConfigurationReference = 68EBF90D908BC5F59A3DB1AB /* Pods-Note Travel.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Note Travel/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.duris.Note-Travel";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Note Travel/Note Travel-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
 		};
@@ -531,10 +605,15 @@
 			baseConfigurationReference = B3198B1FF12C66C6ACC3E28E /* Pods-Note Travel.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = "Note Travel/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.duris.Note-Travel";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Note Travel/Note Travel-Bridging-Header.h";
 			};
 			name = Release;
 		};
@@ -565,10 +644,15 @@
 		0DD54A1A1C3DE81400C3473B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = "Note TravelUITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.duris.Note-TravelUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Note Travel-Bridging-Header.h";
 				TEST_TARGET_NAME = "Note Travel";
 				USES_XCTRUNNER = YES;
 			};
@@ -577,10 +661,15 @@
 		0DD54A1B1C3DE81400C3473B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos",
+				);
 				INFOPLIST_FILE = "Note TravelUITests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "io.duris.Note-TravelUITests";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Note Travel-Bridging-Header.h";
 				TEST_TARGET_NAME = "Note Travel";
 				USES_XCTRUNNER = YES;
 			};

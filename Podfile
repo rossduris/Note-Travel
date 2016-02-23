@@ -3,7 +3,7 @@ use_frameworks!
 
 target 'Note Travel' do
 pod 'Alamofire', '~> 3.0'
-pod 'BSImagePicker', '~> 2.1'
+
 end
 
 target 'Note TravelTests' do

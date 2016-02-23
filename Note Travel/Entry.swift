@@ -6,14 +6,14 @@
 //  Copyright © 2016 duris.io. All rights reserved.
 //
 
-
-
 import UIKit
 import CoreData
 
 class Entry: NSManagedObject {
     
     @NSManaged var title: String!
+    @NSManaged var places: [Place]
+    @NSManaged var photos: [Photo]
     
     var newEntry:Bool!
     
