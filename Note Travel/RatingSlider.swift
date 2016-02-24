@@ -81,7 +81,6 @@ class RatingSlider: UIControl {
             ratingNumberLabel.text = "5/10"
         case 55..<65:
             ratingNumber = 6
-            print("should be 6")
             ratingNumberLabel.text = "6/10"
         case 65..<75:
             ratingNumber = 7
@@ -107,18 +106,7 @@ class RatingSlider: UIControl {
     override func endTrackingWithTouch(touch: UITouch?, withEvent event: UIEvent?) {
         true
     }
-    
-    func getColor(rating:Int) -> UIColor{
-        //let barWidth = self.frame.width
-        let halfOfSlider = 22
-        let ratingMultiplier = rating * 10
 
-        let value = ((Double(100 - Int(ratingMultiplier)) * 0.01)*255 * 1.9) + Double(halfOfSlider)
-        print(value)
-        
-        return UIColor(red: CGFloat(round(value))/255, green: 1, blue: 0, alpha: 1)
-    }
-    
     override func layoutSubviews() {
         
         sliderBarImage.image = sliderBarImage.image?.imageWithRenderingMode(.AlwaysTemplate)

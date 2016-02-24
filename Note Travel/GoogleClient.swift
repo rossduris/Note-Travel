@@ -7,34 +7,42 @@
 //
 
 import Alamofire
-import MapKit
 
 class GoogleClient: NSObject {
     
     let API_KEY = "AIzaSyCbdkg0q6Hq7BdfRexcBCzBN2U5bbCwWcQ"
     let BASE_URL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?"
-    let PLACE_SEARCH = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?rankby=distance"
-    let PLACE_DETAILS = "https://maps.googleapis.com/maps/api/place/details/json?"
-    let PLACE_PHOTO = "https://maps.googleapis.com/maps/api/place/photo?"
-    let PLACE_ADD = "https://maps.googleapis.com/maps/api/place/add/json?"
     
     
-    
-    func searchForCities(searchString: String, completionHandler: (success: Bool, data:AnyObject) -> Void) {
+    func searchForCities(searchString: String, completionHandler: (success: Bool, results:[String], error: String?) -> Void) {
+
+        
         Alamofire.request(.GET, BASE_URL, parameters: [
             "key": API_KEY,
             "input": searchString,
             "types": "(cities)"
             ])
             .responseJSON { response in
-
-                
-                if let JSON = response.result.value {
-                    dispatch_async(dispatch_get_main_queue()) {
-                        completionHandler(success: true, data: JSON)
+                if response.result.error != nil {
+                    let error = response.result.error!.localizedDescription
+                    dispatch_async(dispatch_get_main_queue(), {
+                        completionHandler(success: false, results: [], error: error)
+                    })
+                } else {
+                    if let JSON = response.result.value {
+                    if let predictions = JSON["predictions"]{
+                        var resultStrings = [String]()
+                        for prediction in (predictions as? NSArray)!{
+                            print(prediction["description"]!!)
+                            let string = prediction["description"]!!
+                            resultStrings.append(string as! String)
+                        }
+                        dispatch_async(dispatch_get_main_queue(), {
+                            completionHandler(success: true, results: resultStrings, error: nil)
+                        })
                     }
-                    
                 }
+            }
         }
     }
     

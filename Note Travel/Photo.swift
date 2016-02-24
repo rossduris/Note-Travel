@@ -55,7 +55,6 @@ class Photo: NSManagedObject {
         self.isDownloading = true
 
         if self.imageUrlString != "" {
-            dispatch_async(dispatch_get_main_queue(), {
             if let imageURL = NSURL(string: self.imageUrlString) {
                 if let imageData = NSData(contentsOfURL: imageURL) {
                     let image = UIImage(data: imageData)
@@ -71,7 +70,6 @@ class Photo: NSManagedObject {
             } else {
                 print("no photo URL")
             }
-            })
         }
     }
     

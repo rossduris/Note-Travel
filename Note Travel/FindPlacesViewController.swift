@@ -10,45 +10,20 @@ import UIKit
 import MapKit
 import CoreData
 
-class FindPlacesViewController: UIViewController, MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, NSFetchedResultsControllerDelegate {
+class FindPlacesViewController: SharedViewController, MKMapViewDelegate, UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate, NSFetchedResultsControllerDelegate {
     
     @IBOutlet weak var searchBar:UISearchBar!
     @IBOutlet weak var tableView:UITableView!
     @IBOutlet weak var mapView:MKMapView!
     @IBOutlet weak var showListButton:UIButton!
     @IBOutlet weak var showMapButton:UIButton!
+    @IBOutlet weak var activityIndicator:UIActivityIndicatorView!
     
     var tempResults = [Place]()
     var placemarks = [CLPlacemark]()
     var entry: Entry!
-    var searchBarVisible: Bool!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        searchBar.delegate = self
-        searchBarVisible = true
-        
-        mapView.delegate = self
-        mapView.hidden = true
-        
-        showMapButton.hidden = true
-        
-        searchBar.becomeFirstResponder()
-        
-        
-        showListButton.hidden = true
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-
-        title = "Find Places"
-        searchBar.placeholder = "Find places in \(entry.title)"
-    }
     
-    override func viewWillAppear(animated: Bool) {
-        tableView.reloadData()
-    }
     
     
     /*
@@ -57,11 +32,9 @@ class FindPlacesViewController: UIViewController, MKMapViewDelegate, UISearchBar
     var sharedContext: NSManagedObjectContext {
         return CoreDataStackManager.sharedInstance().managedObjectContext
     }
-  
     
     lazy var scratchContext: NSManagedObjectContext = {
         let context = NSManagedObjectContext(concurrencyType: .MainQueueConcurrencyType)
-        
         context.persistentStoreCoordinator =  CoreDataStackManager.sharedInstance().persistentStoreCoordinator
         return context
     }()
@@ -69,24 +42,30 @@ class FindPlacesViewController: UIViewController, MKMapViewDelegate, UISearchBar
     func saveContext() {
         CoreDataStackManager.sharedInstance().saveContext()
     }
+
     
     
-    func toggleSearchBar(visible: Bool) {
-        if visible {
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
-                self.searchBar.frame.origin.y += 44
-                //self.mapView.frame.origin.y += 44
-                self.searchBarVisible = true
-            })
-        } else {
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
-                self.searchBar.frame.origin.y -= 44
-                //self.mapView.frame = self.view.frame
-                self.searchBarVisible = false
-            })
-        }
+    
+    /*
+    Lifecycle
+    */
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        prepareUI()
     }
     
+    override func viewWillAppear(animated: Bool) {
+        tableView.reloadData()
+    }
+    
+    
+    
+    
+    
+    /*
+    Table View Delegate
+    */
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return tempResults.count
     }
@@ -98,69 +77,35 @@ class FindPlacesViewController: UIViewController, MKMapViewDelegate, UISearchBar
         print(tempResults[indexPath.row].id)
         return cell
     }
-
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchBar.text == ""{
-
-            tempResults.removeAll()
-            tableView.reloadData()
-        }
-        
-        
-        let placemark = placemarks[0] as CLPlacemark
-        let latitude = placemark.location?.coordinate.latitude
-        let longitude = placemark.location?.coordinate.longitude
-        
-        FoursquareClient.sharedInstance().searchFoursquareForPlace(searchText, latitude: latitude!, longitude: longitude!) { (success: Bool, data: AnyObject) in
-            if success {
-                if let response = data["response"] as? [String: AnyObject]  {
-                    if let venues = response["venues"] {
-
-                        self.tempResults.removeAll()
-                        for venue in (venues as? NSArray)! {
-
-                            
-                            if let location = venue["location"] {
-                                if let lat = location!["lat"], let lng = location!["lng"] {
-                                    
-                                   
-                                    if let name = venue["name"] {
-
-                                        
-                                        let title = name as! String
-                                        let latitude = lat as! CLLocationDegrees
-                                        let longitude = lng as! CLLocationDegrees
-                         
-                                        if let id = venue["id"] as? String {
-
-                                            
-                                let dictionary = [
-                                    "name": title,
-                                    "latitude": latitude,
-                                    "longitude": longitude,
-                                    "rating": 0,
-                                    "id":id
-                                    ] as [String: AnyObject]
-                                print(id)
-                                let place = Place(dictionary: dictionary, context: self.scratchContext)
-
-                                            //place.entry = self.entry
-                                            place.title = title
-                                            self.tempResults.append(place)                                        
-                                            self.tableView.reloadData()
-                                        }
-                                        
-
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.hidden = true
+        mapView.hidden = false
+        if mapView.annotations.isEmpty {
+            for place in tempResults {
+                mapView.addAnnotation(place as Place)
+                print(place.id)
             }
         }
+        showListButton.hidden = false
+        showMapButton.hidden = true
+        searchBar.endEditing(true)
+        
+        let place = tempResults[indexPath.row]
+        
+        let span = MKCoordinateSpanMake(0.1, 0.1)
+        let region = MKCoordinateRegion(center: place.coordinate, span: span)
+        mapView.setRegion(region, animated: true)
+        mapView.selectAnnotation(place, animated: true)
     }
     
+
+   
+    
+    
+    /*
+    Searchbar Helpers
+    */
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
         searchBar.endEditing(true)
     }
@@ -172,6 +117,69 @@ class FindPlacesViewController: UIViewController, MKMapViewDelegate, UISearchBar
         return true
     }
     
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    
+        
+        mapView.removeAnnotations(mapView.annotations)
+        tempResults.removeAll()
+        
+        let placemark = placemarks[0] as CLPlacemark
+        let latitude = placemark.location?.coordinate.latitude
+        let longitude = placemark.location?.coordinate.longitude
+        activityIndicator.hidden = false
+        activityIndicator.startAnimating()
+        
+        if searchBar.text == ""{
+            
+            tempResults.removeAll()
+            tableView.reloadData()
+        }
+        
+        
+        activityIndicator.startAnimating()
+        activityIndicator.hidden = false
+        
+        FoursquareClient.sharedInstance().searchFoursquareForPlace(searchText, latitude: latitude!, longitude: longitude!) { (success, places, error) in
+            if success {
+                self.tempResults = places
+                self.tableView.reloadData()
+                self.activityIndicator.stopAnimating()
+            } else {
+                print(error!)
+                self.alertError(error!, viewController: self)
+                
+                
+            }
+        }
+    }
+    
+  
+    
+    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+        tableView.hidden = true
+        showListButton.hidden = false
+        showMapButton.hidden = true
+        mapView.hidden = false
+        let placemark = placemarks[0] as CLPlacemark
+        let location = CLLocationCoordinate2DMake((placemark.location?.coordinate.latitude)!, (placemark.location?.coordinate.longitude)!)
+        let span = MKCoordinateSpanMake(0.2, 0.2)
+        let region = MKCoordinateRegion(center: location, span: span)
+        mapView.setRegion(region, animated: false)
+        mapView.removeAnnotations(mapView.annotations)
+        
+        for place in tempResults {
+            mapView.addAnnotation(place)
+        }
+        searchBar.endEditing(true)
+    }
+    
+    
+    
+    
+    
+    /*
+    Actions
+    */
     @IBAction func didTouchCancelButton() {
         dismissViewControllerAnimated(true, completion: nil)
     }
@@ -191,26 +199,13 @@ class FindPlacesViewController: UIViewController, MKMapViewDelegate, UISearchBar
         tableView.hidden = true
     }
 
-    func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        tableView.hidden = true
-        showListButton.hidden = false
-        showMapButton.hidden = true
-        mapView.hidden = false
-        let placemark = placemarks[0] as CLPlacemark
-        let location = CLLocationCoordinate2DMake((placemark.location?.coordinate.latitude)!, (placemark.location?.coordinate.longitude)!)
-        let span = MKCoordinateSpanMake(0.2, 0.2)
-        let region = MKCoordinateRegion(center: location, span: span)
-        mapView.setRegion(region, animated: false)
-        mapView.removeAnnotations(mapView.annotations)
-        
-        for place in tempResults {
-            mapView.addAnnotation(place)
-        }
-        
-        
-        searchBar.endEditing(true)
-    }
+ 
     
+    
+    
+    /*
+    MapView Delegate
+    */
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         if annotation is MKUserLocation {
             //return nil so map view draws "blue dot" for standard user location
@@ -221,7 +216,6 @@ class FindPlacesViewController: UIViewController, MKMapViewDelegate, UISearchBar
             return nil
         }
         
-
         let reuseId = "pin"
         var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(reuseId) as? MKPinAnnotationView
         
@@ -236,28 +230,6 @@ class FindPlacesViewController: UIViewController, MKMapViewDelegate, UISearchBar
         annotationView!.pinTintColor = UIColor.redColor()
         
         return annotationView
-    }
-
-    
-    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        tableView.hidden = true
-        mapView.hidden = false
-        if mapView.annotations.isEmpty {
-            for place in tempResults {
-                mapView.addAnnotation(place as Place)
-                print(place.id)
-            }
-        }
-        showListButton.hidden = false
-        showMapButton.hidden = true
-        searchBar.endEditing(true)
-        
-        let place = tempResults[indexPath.row]
-
-        let span = MKCoordinateSpanMake(0.1, 0.1)
-        let region = MKCoordinateRegion(center: place.coordinate, span: span)
-        mapView.setRegion(region, animated: true)
-        mapView.selectAnnotation(place, animated: true)
     }
     
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
@@ -288,6 +260,33 @@ class FindPlacesViewController: UIViewController, MKMapViewDelegate, UISearchBar
         
         
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    
+    
+    /*
+    UI
+    */
+    func prepareUI(){
+        searchBar.delegate = self
+        
+        mapView.delegate = self
+        mapView.hidden = true
+        
+        showMapButton.hidden = true
+        
+        searchBar.becomeFirstResponder()
+        
+        activityIndicator.hidden = true
+        activityIndicator.hidesWhenStopped = true
+        
+        showListButton.hidden = true
+        
+        tableView.delegate = self
+        tableView.dataSource = self
+        
+        title = "Find Places"
+        searchBar.placeholder = "Find places in \(entry.title)"
     }
   
 

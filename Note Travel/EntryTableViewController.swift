@@ -12,13 +12,13 @@ import CoreData
 class EntryTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate, UITextFieldDelegate, UISearchBarDelegate {
     
     @IBOutlet weak var travelTableView: UITableView!
-    @IBOutlet weak var entryTitleTextField:UITextField!
-    var newEntry = false
-    @IBOutlet weak var searchResulstsTableView:UITableView!
+
+    @IBOutlet weak var searchResultsTableView:UITableView!
     @IBOutlet weak var searchBar:UISearchBar!
     @IBOutlet weak var newEntryButton:UIButton!
     @IBOutlet weak var newEntryButtonWrapper:UIView!
     @IBOutlet weak var editBarButton:UIBarButtonItem!
+    @IBOutlet weak var refreshButton:UIBarButtonItem!
     var loading = false
     var searchController: UISearchController!
     var searchResults = [AnyObject]()
@@ -47,28 +47,26 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
     override func viewDidLoad() {
         super.viewDidLoad()       
         
-        travelTableView.delegate = self
-        travelTableView.dataSource = self
-        
-        searchResulstsTableView.delegate = self
-        searchResulstsTableView.dataSource = self
-        
-        searchBar.delegate = self
-        searchBar.hidden = true
-        
-        
-        searchResulstsTableView.hidden = true
-        
-        loading(false)
-        
-        newEntryButtonWrapper.layer.borderWidth = 1
-        newEntryButtonWrapper.layer.borderColor = UIColor.lightGrayColor().CGColor
-        
-        
-        fetchedEntriesController.delegate = self        
+        prepareUI()
         
         fetchAllEntries()
+    }
+    override func viewDidAppear(animated: Bool) {
+        newEntryButtonWrapper.frame.origin.y -= 1
+        if fetchedEntriesController.fetchedObjects?.count > 0 {
+            editBarButton.title = "Edit"
+            refreshButton.enabled = true
+        } else {
+            refreshButton.enabled = false
+        }
+    }
     
+    override func viewWillAppear(animated: Bool) {
+        travelTableView.reloadData()
+        wrapVisible = true
+        if travelTableView.editing == true {
+            editBarButton.title = "Done"
+        }
     }
 
     
@@ -110,49 +108,39 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
-        newEntryButtonWrapper.frame.origin.y -= 1
-        if fetchedEntriesController.fetchedObjects?.count > 0 {
-            editBarButton.title = "Edit"
-        } else {
-            editBarButton.title = ""
-        }
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        travelTableView.reloadData()
-         wrapVisible = true
-        if travelTableView.editing == true {
-            editBarButton.title = "Done"
-        }
-    }
+
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
-        searchResulstsTableView.hidden = false
+        searchResultsTableView.hidden = false
         searchBar.hidden = false
         
         editBarButton.title = "Cancel"
         editBarButton.action = "didTouchCancelButton"
     }
     
-    @IBAction func didTouchEditButton() {
-        
-        print("go")
-        if editBarButton.title == "Edit" {
-            travelTableView.editing = true
-            editBarButton.title = "Done"
-        } else {
-            travelTableView.editing = false
-            editBarButton.title = "Edit"
+    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+        loading(true)
+        searchResults.removeAll()
+        GoogleClient.sharedInstance().searchForCities(searchText) { (success, results, error) in
+            if success {
+                self.searchResults = results
+                self.searchResultsTableView.reloadData()
+                self.loading(false)
+            } else {
+                print(error!)
+            }
         }
+        
     }
+ 
+ 
     
     func didTouchCancelButton() {
         searchBar.endEditing(true)
         searchBar.hidden = true
         editBarButton.title = ""
         newEntryButtonWrapper.hidden = false
-        searchResulstsTableView.hidden = true
+        searchResultsTableView.hidden = true
         
         if fetchedEntriesController.fetchedObjects?.count > 0 {
             editBarButton.title = "Edit"
@@ -162,32 +150,16 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
-    func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-        self.loading(true)
-        GoogleClient.sharedInstance().searchForCities(searchText) { (success: Bool, data: AnyObject) in
-            if success {
-                print("success")
-        
-                if let predictions = data["predictions"]{
-                    self.searchResults.removeAll()
-                    for prediction in (predictions as? NSArray)!{
-                        print(prediction["description"]!!)
-                        let string = prediction["description"]!!
-    
-                        self.searchResults.append(string)
-                        self.searchResulstsTableView.reloadData()
-                    }
-                }
-                self.loading(false)
-            }
+    func loading(force:Bool) {
+        if force {
+            activityIndicator.hidden = false
+            activityIndicator.startAnimating()
+        } else {
+            activityIndicator.hidden = true
+            activityIndicator.stopAnimating()
         }
-        
     }
-    
-    func resignKeyboard(gestureRecognizer: UIGestureRecognizer){
-        entryTitleTextField.resignFirstResponder()
-    }
-    
+ 
  
 
     /*
@@ -263,20 +235,13 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
                     if item.place?.rating > 6 {
                         photos.append(item)
                     }
-                    
                 }
                 
                 if !photos.isEmpty {
                     let photoCount = photos.count
                     let randomPhoto = Int(arc4random_uniform(UInt32(photoCount)))
-                    
                     cell.entryPhotoView.image = photos[randomPhoto].image
                 }
-                
-               
-
-    
-              
             }
             
             return cell
@@ -291,7 +256,6 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
     }
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-
         
         if tableView == travelTableView {
             let vc = storyboard?.instantiateViewControllerWithIdentifier("ViewEntryViewController") as! ViewEntryViewController
@@ -300,16 +264,13 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
             navigationController?.pushViewController(vc, animated: true)
         } else {
             searchBar.endEditing(true)
-            searchResulstsTableView.hidden = true
+            searchResultsTableView.hidden = true
             searchBar.text = ""
             newEntryButtonWrapper.hidden = false
             searchBar.hidden = true
             editBarButton.title = ""
             
-            
             let title = searchResults[indexPath.row]
-            
-            
             print(title)
             let parts = title.componentsSeparatedByString(",")
             let string = "\(parts[0]),\(parts[1])"
@@ -322,9 +283,6 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
             let vc = storyboard?.instantiateViewControllerWithIdentifier("ViewEntryViewController") as! ViewEntryViewController
             vc.entry = entry
             navigationController?.pushViewController(vc, animated: true)
-            
-
-
         }
     }
     
@@ -343,6 +301,23 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
         }
     }
     
+    
+    
+    
+    /*
+    Actions
+    */
+    @IBAction func didTouchEditButton() {
+    
+        if editBarButton.title == "Edit" {
+            travelTableView.editing = true
+            editBarButton.title = "Done"
+        } else {
+            travelTableView.editing = false
+            editBarButton.title = "Edit"
+        }
+    }
+    
     @IBAction func refreshEntryPhotos() {
         travelTableView.reloadData()
     }
@@ -352,16 +327,30 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
         newEntryButtonWrapper.hidden = true
         searchBar.becomeFirstResponder()
     }
-
     
-    func loading(force:Bool) {
-        if force {
-            activityIndicator.hidden = false
-            activityIndicator.startAnimating()
-        } else {
-            activityIndicator.hidden = true
-            activityIndicator.stopAnimating()
-        }
+    
+    
+    /*
+    UI
+    */
+    func prepareUI(){
+        travelTableView.delegate = self
+        travelTableView.dataSource = self
+        
+        searchResultsTableView.delegate = self
+        searchResultsTableView.dataSource = self
+        
+        searchBar.delegate = self
+        searchBar.hidden = true
+        
+        searchResultsTableView.hidden = true
+        
+        loading(false)
+        
+        newEntryButtonWrapper.layer.borderWidth = 1
+        newEntryButtonWrapper.layer.borderColor = UIColor.lightGrayColor().CGColor
+        
+        fetchedEntriesController.delegate = self
     }
     
     
