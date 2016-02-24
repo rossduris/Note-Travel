@@ -14,13 +14,14 @@ class ViewPlaceViewController: UIViewController, NSFetchedResultsControllerDeleg
     
     @IBOutlet weak var saveButton:UIButton!
     @IBOutlet weak var topImageView:UIImageView!
-    @IBOutlet weak var photoCountLabel:UILabel!
+    @IBOutlet weak var ratingSlider:UIView!
+    @IBOutlet weak var subLabel:UILabel!
+    @IBOutlet weak var tempLabel:UILabel!
+    @IBOutlet weak var photoTipLabel:UILabel!
+    @IBOutlet weak var errorLabel:UILabel!
+    @IBOutlet weak var savedRatingLabel:UILabel!
     @IBOutlet weak var activityIndicator:UIActivityIndicatorView!
-    var images = [UIImage]()
-    
-    //var selectedPlace = MKPointAnnotation()
-
-    //var entry : Entry!
+    @IBOutlet weak var editButton:UIBarButtonItem!
     
     var place: Place!
 
@@ -47,6 +48,30 @@ class ViewPlaceViewController: UIViewController, NSFetchedResultsControllerDeleg
         
         fetchPhotos()
         
+        let slider = self.ratingSlider as! RatingSlider
+        
+        if place.rating != 0 {
+            print(place.rating)
+            slider.hidden = true
+
+            savedRatingLabel.textColor = calulateColor(place.rating)
+            savedRatingLabel.text = "\(place.rating)/10"
+            savedRatingLabel.hidden = false
+            tempLabel.hidden = true
+            subLabel.text = "You Voted"
+            saveButton.hidden = true
+            editButton.title = "Edit"
+        } else {
+            editButton.title = ""
+            savedRatingLabel.hidden = true
+            self.navigationItem.backBarButtonItem?.enabled = false
+            subLabel.text = place.name + "?"
+
+        }
+                    photoTipLabel.hidden = true
+        
+        savedRatingLabel.textColor = calulateColor(place.rating)
+        
         if place.photos.isEmpty {
             activityIndicator.hidden = false
             activityIndicator.startAnimating()
@@ -55,6 +80,13 @@ class ViewPlaceViewController: UIViewController, NSFetchedResultsControllerDeleg
             activityIndicator.stopAnimating()
         }
         
+    
+        
+        let photoButton = UIButton()
+        photoButton.frame = topImageView.frame
+        photoButton.addTarget(self, action: "loadRandomPhoto", forControlEvents: .TouchUpInside)
+        view.addSubview(photoButton)
+        
         fetchedPhotosController.delegate = self
         
         //Notification observer for when an image is downloaded
@@ -62,7 +94,6 @@ class ViewPlaceViewController: UIViewController, NSFetchedResultsControllerDeleg
 
         title = place.name
         let id = place.id
-        //print(place.id)
  
         if place.photos.isEmpty {
             FoursquareClient.sharedInstance().searchFoursquareForPlacePhotos(id!) { (success:Bool, data: AnyObject) in
@@ -71,7 +102,7 @@ class ViewPlaceViewController: UIViewController, NSFetchedResultsControllerDeleg
                         if let photos = response["photos"] as? [String: AnyObject]{
                             if let items = photos["items"] as? NSArray {
                                 for item in items {
-                                    dispatch_async(dispatch_get_main_queue(), {
+
                                         print(items.count)
                                         if let prefix = item["prefix"], let suffix = item["suffix"] {
                                             let size = "300x500"
@@ -85,13 +116,13 @@ class ViewPlaceViewController: UIViewController, NSFetchedResultsControllerDeleg
                                                 "imageUrlString": imageUrl
                                             ]
                                             let photo = Photo(dictionary: dictionary, context: self.sharedContext)
-                                            
+                                            photo.entry = self.place.entry
                                             photo.place = self.place
                                             photo.downloadImage()
                                             
                                             
                                         }
-                                    })
+                                    
                                     
                                 }
                                 
@@ -107,6 +138,27 @@ class ViewPlaceViewController: UIViewController, NSFetchedResultsControllerDeleg
         }
         
     }
+ 
+    
+    
+    override func viewWillDisappear(animated: Bool) {
+        if place.rating == 0 {
+            sharedContext.deleteObject(place)
+        }
+    }
+    
+    func loadRandomPhoto(){
+        hidePhotoTip()
+        let photoCount = place.photos.count
+        let randomPhoto = Int(arc4random_uniform(UInt32(photoCount)))
+        UIView.animateWithDuration(1, animations: { () -> Void in
+            
+            self.topImageView.alpha = 0.5
+            self.topImageView.image = self.place.photos[randomPhoto].image
+            self.topImageView.alpha = 1
+
+        })
+    }
     
     /*
     Image Loaded Notification
@@ -114,21 +166,17 @@ class ViewPlaceViewController: UIViewController, NSFetchedResultsControllerDeleg
     func didLoadImage(notification: NSNotification) {
         dispatch_async(dispatch_get_main_queue(), {
             print("ImageLoadedNotification")
+            self.photoTipLabel.hidden = false
             let photo = self.fetchedPhotosController.fetchedObjects?.first as! Photo
             self.topImageView.image = photo.image
-            self.photoCountLabel.text = "\(self.fetchedPhotosController.fetchedObjects?.count)"
             self.activityIndicator.stopAnimating()
             self.activityIndicator.hidden = true
+            
         })
         
     }
     
     
-    func didLoadImage() {
-        topImageView.image = images.first
-        activityIndicator.stopAnimating()
-        activityIndicator.hidden = true
-    }
     
     /*
     Try to fetch the photos from Core Data
@@ -137,7 +185,9 @@ class ViewPlaceViewController: UIViewController, NSFetchedResultsControllerDeleg
         
         let fetchRequest = NSFetchRequest(entityName: "Photo")
         fetchRequest.sortDescriptors = []
-        fetchRequest.predicate = NSPredicate(format: "place == %@", self.place)
+        if self.place != nil {
+            fetchRequest.predicate = NSPredicate(format: "place == %@", self.place)            
+        }
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
         
         
@@ -180,20 +230,68 @@ class ViewPlaceViewController: UIViewController, NSFetchedResultsControllerDeleg
             }
     }
   
-    
-    
-
-    
-    
-    @IBAction func didTouchSaveButton() {
-        print(place.title)
-        print(place.entry?.title)
-        saveContext()
+    @IBAction func didTouchEditButton() {
+        if editButton.title == "Edit" {
+            editButton.title = "Cancel"
+            ratingSlider.hidden = false
+            savedRatingLabel.hidden = true
+            saveButton.hidden = false
+            subLabel.text = "Change Your Rating"
+        } else {
+            editButton.title = "Edit"
+            ratingSlider.hidden = true
+            saveButton.hidden = true
+            subLabel.text = "You Voted"
+            savedRatingLabel.hidden = false
+        }
+  
         
-        dismissViewControllerAnimated(true, completion: nil)
     }
     
+    @IBAction func didTouchSaveButton() {
+        let slider = self.ratingSlider as! RatingSlider
+        print(slider.ratingNumber)
+        
+        if slider.ratingNumber == 0 {
+            errorLabel.hidden = false
+            errorLabel.alpha = 1
+            errorLabel.text = "No Rating Selected"
+            UIView.animateWithDuration(1, animations: { () -> Void in
+             self.errorLabel.alpha = 0
+            })
+        } else {
+            print(place.title)
+            print(place.entry?.title)
+            
+            
+            place.rating = slider.ratingNumber
+            saveContext()
+            
+            dismissViewControllerAnimated(true, completion: nil)
+            navigationController?.popViewControllerAnimated(true)
+        }
+ 
+    }
     
+    func hidePhotoTip() {
+        
+        self.photoTipLabel.hidden = true
+    }
+    
+    func calulateColor(value: Int) -> UIColor{
+        
+        if value >= 5 {
+            print("value: \(value)")
+            let ratingPercent = ((105 - (Double(Double(value)/10.0) * 100)) * 0.01) * 255 * 2
+            print ("rating percent: \(ratingPercent)")
+            let color = UIColor(red: CGFloat(ratingPercent/255), green: 1, blue: 0, alpha: 1)
+            return color
+        } else {
+            let ratingPercent = (Double(value)/10.0)
+            let color = UIColor(red: 1, green: CGFloat(ratingPercent*255)/255, blue: 0, alpha: 1)
+            return color
+        }
+    }
     
 
 }

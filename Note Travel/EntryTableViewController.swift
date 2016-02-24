@@ -25,8 +25,7 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
     var wrapVisible: Bool!
     @IBOutlet weak var activityIndicator:UIActivityIndicatorView!
 
-    
-    
+
     
     /*
     Core Data Convenience
@@ -57,6 +56,7 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
         searchBar.delegate = self
         searchBar.hidden = true
         
+        
         searchResulstsTableView.hidden = true
         
         loading(false)
@@ -68,10 +68,11 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
         fetchedEntriesController.delegate = self        
         
         fetchAllEntries()
-        
-
-    }
     
+    }
+
+    
+
 
     func scrollViewWillEndDragging(scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let translation = scrollView.panGestureRecognizer.translationInView(scrollView.superview)
@@ -111,11 +112,19 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
     
     override func viewDidAppear(animated: Bool) {
         newEntryButtonWrapper.frame.origin.y -= 1
+        if fetchedEntriesController.fetchedObjects?.count > 0 {
+            editBarButton.title = "Edit"
+        } else {
+            editBarButton.title = ""
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
         travelTableView.reloadData()
          wrapVisible = true
+        if travelTableView.editing == true {
+            editBarButton.title = "Done"
+        }
     }
     
     func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
@@ -123,16 +132,34 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
         searchBar.hidden = false
         
         editBarButton.title = "Cancel"
-        editBarButton.action = "newAction"
+        editBarButton.action = "didTouchCancelButton"
     }
     
-    func newAction() {
-        //editBarButton.action = "newAction"
+    @IBAction func didTouchEditButton() {
+        
+        print("go")
+        if editBarButton.title == "Edit" {
+            travelTableView.editing = true
+            editBarButton.title = "Done"
+        } else {
+            travelTableView.editing = false
+            editBarButton.title = "Edit"
+        }
+    }
+    
+    func didTouchCancelButton() {
         searchBar.endEditing(true)
         searchBar.hidden = true
         editBarButton.title = ""
         newEntryButtonWrapper.hidden = false
         searchResulstsTableView.hidden = true
+        
+        if fetchedEntriesController.fetchedObjects?.count > 0 {
+            editBarButton.title = "Edit"
+            editBarButton.action = "didTouchEditButton"
+        } else {
+            editBarButton.title = ""
+        }
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
@@ -140,13 +167,13 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
         GoogleClient.sharedInstance().searchForCities(searchText) { (success: Bool, data: AnyObject) in
             if success {
                 print("success")
-                //print(data)
-                //print(data["predictions"])
+        
                 if let predictions = data["predictions"]{
                     self.searchResults.removeAll()
                     for prediction in (predictions as? NSArray)!{
                         print(prediction["description"]!!)
                         let string = prediction["description"]!!
+    
                         self.searchResults.append(string)
                         self.searchResulstsTableView.reloadData()
                     }
@@ -227,7 +254,30 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
             let cell = tableView.dequeueReusableCellWithIdentifier("travelCell", forIndexPath: indexPath) as! EntryCell
             let entry = fetchedEntriesController.objectAtIndexPath(indexPath) as! Entry
             cell.entryTitleLabel.text = entry.title
-            cell.entryPhotoView.image = UIImage(named: "entryPlaceholder")
+            if entry.photos.isEmpty {
+             cell.entryPhotoView.image = UIImage(named: "entryPlaceholder")
+            } else {
+            
+                var photos = [Photo]()
+                for item in entry.photos{
+                    if item.place?.rating > 6 {
+                        photos.append(item)
+                    }
+                    
+                }
+                
+                if !photos.isEmpty {
+                    let photoCount = photos.count
+                    let randomPhoto = Int(arc4random_uniform(UInt32(photoCount)))
+                    
+                    cell.entryPhotoView.image = photos[randomPhoto].image
+                }
+                
+               
+
+    
+              
+            }
             
             return cell
         } else {
@@ -255,10 +305,16 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
             newEntryButtonWrapper.hidden = false
             searchBar.hidden = true
             editBarButton.title = ""
+            
+            
             let title = searchResults[indexPath.row]
+            
+            
             print(title)
+            let parts = title.componentsSeparatedByString(",")
+            let string = "\(parts[0]),\(parts[1])"
             let dictionary = [
-                "title": title
+                "title": string
             ]
             let entry = Entry(dictionary: dictionary, context: sharedContext)
             saveContext()
@@ -266,6 +322,9 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
             let vc = storyboard?.instantiateViewControllerWithIdentifier("ViewEntryViewController") as! ViewEntryViewController
             vc.entry = entry
             navigationController?.pushViewController(vc, animated: true)
+            
+
+
         }
     }
     
@@ -282,6 +341,10 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
             wrapVisible = true
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Top)
         }
+    }
+    
+    @IBAction func refreshEntryPhotos() {
+        travelTableView.reloadData()
     }
     
 

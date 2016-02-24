@@ -36,10 +36,6 @@ class FindPlacesViewController: UIViewController, MKMapViewDelegate, UISearchBar
         
         searchBar.becomeFirstResponder()
         
-        let tap = UITapGestureRecognizer(target: self, action: "didTapMap:")
-        tap.delegate = self
-        tap.numberOfTapsRequired = 1
-        mapView.addGestureRecognizer(tap)
         
         showListButton.hidden = true
         
@@ -75,14 +71,6 @@ class FindPlacesViewController: UIViewController, MKMapViewDelegate, UISearchBar
     }
     
     
-    func didTapMap(sender: UIGestureRecognizer) {
-//        if searchBarVisible == true {
-//            toggleSearchBar(false)
-//        } else {
-//            toggleSearchBar(true)
-//        }
-    }
-    
     func toggleSearchBar(visible: Bool) {
         if visible {
             UIView.animateWithDuration(0.3, animations: { () -> Void in
@@ -113,8 +101,7 @@ class FindPlacesViewController: UIViewController, MKMapViewDelegate, UISearchBar
 
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
         if searchBar.text == ""{
-            //searchResults.removeAll()
-            //searchResultLocations.removeAll()
+
             tempResults.removeAll()
             tableView.reloadData()
         }
@@ -151,6 +138,7 @@ class FindPlacesViewController: UIViewController, MKMapViewDelegate, UISearchBar
                                     "name": title,
                                     "latitude": latitude,
                                     "longitude": longitude,
+                                    "rating": 0,
                                     "id":id
                                     ] as [String: AnyObject]
                                 print(id)
@@ -171,36 +159,6 @@ class FindPlacesViewController: UIViewController, MKMapViewDelegate, UISearchBar
                 }
             }
         }
-//        GoogleClient.sharedInstance().searchForNearbyPlaces(searchText, location: location) { (success:Bool, data: AnyObject) in
-//            if success {
-//                if let results = data["results"] as? NSArray{
-//                    self.searchResults.removeAll()
-//                    self.searchResultLocations.removeAll()
-//                    for result in results {
-//                        print(result["geometry"])
-//                        if let geometry = result["geometry"]{
-//                            print(geometry!["location"])
-//                            if let location = geometry!["location"] {
-//                                print(location!)
-//                                if let latitude = location!["lat"], let longitude = location!["lng"], let searchResult = result["name"]!
-//                                {
-//                                    let title = searchResult as! String
-//                                    let lat = latitude as! CLLocationDegrees
-//                                    let lng = longitude as! CLLocationDegrees
-//                                    let coordinate = CLLocationCoordinate2DMake(lat, lng)
-//                                    let annotation = SearchPinAnnotation()
-//                                    annotation.coordinate = coordinate
-//                                    annotation.title = title
-//                                    self.searchResultLocations.append(annotation)
-//                                    self.searchResults.append(searchResult as! String)
-//                                    self.tableView.reloadData()
-//                                }
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//        }
     }
     
     func scrollViewWillBeginDragging(scrollView: UIScrollView) {
@@ -248,6 +206,8 @@ class FindPlacesViewController: UIViewController, MKMapViewDelegate, UISearchBar
         for place in tempResults {
             mapView.addAnnotation(place)
         }
+        
+        
         searchBar.endEditing(true)
     }
     
@@ -305,38 +265,30 @@ class FindPlacesViewController: UIViewController, MKMapViewDelegate, UISearchBar
         
         let selectedPlace = view.annotation as! Place
 
-        let dictionary = [
-            "name": selectedPlace.title!,
-            "latitude": selectedPlace.latitude,
-            "longitude": selectedPlace.longitude,
-            "id":selectedPlace.id
-            ] as [String: AnyObject]
+        for previousPlace in entry.places {
+            if previousPlace.id == selectedPlace.id {
+                vc.place = previousPlace
+            }
+        }
         
-        let place = Place(dictionary: dictionary, context: self.sharedContext)
-        place.entry = entry
-        vc.place = place
+        if vc.place == nil {
+            let dictionary = [
+                "name": selectedPlace.title!,
+                "latitude": selectedPlace.latitude,
+                "longitude": selectedPlace.longitude,
+                "rating": 0,
+                "id":selectedPlace.id
+                ] as [String: AnyObject]
+            
+            let place = Place(dictionary: dictionary, context: self.sharedContext)
+            place.entry = entry
+            vc.place = place
+        }
+      
+        
+        
         navigationController?.pushViewController(vc, animated: true)
-        
-//        let annotationView = view as! MKPinAnnotationView
-//        annotationView.pinTintColor = UIColor.purpleColor()
-//        let dictionary = ["title": (view.annotation?.title!!)!] as [String: AnyObject]
-//        let place = Place(dictionary: dictionary, context: sharedContext)
-//        place.entry = entry
-//        saveContext()
     }
-    
-//    func mapView(mapView: MKMapView, didSelectAnnotationView view: MKAnnotationView) {
-//        var customView = (NSBundle.mainBundle().loadNibNamed("SearchPin", owner: self, options: nil))[0] as! PlacePinView
-//        let cpa = view.annotation as! SearchPinAnnotation
-//        view.addSubview(customView)
-//    }
-//    
-//    func mapView(mapView: MKMapView, didDeselectAnnotationView view: MKAnnotationView) {
-//        view.subviews.first?.hidden = true
-//    }
-    
-    
-   
-
+  
 
 }

@@ -59,7 +59,7 @@ class Photo: NSManagedObject {
             if let imageURL = NSURL(string: self.imageUrlString) {
                 if let imageData = NSData(contentsOfURL: imageURL) {
                     let image = UIImage(data: imageData)
-                    //self.image = image!
+                    self.image = image!
                     FoursquareClient.Caches.imageCache.storeImage(image, withIdentifier: self.imagePath)
                     self.isDownloading = false
                     print("photo loaded")

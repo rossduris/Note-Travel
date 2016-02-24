@@ -17,6 +17,8 @@ class ViewEntryViewController: UIViewController, MKMapViewDelegate, UITableViewD
     @IBOutlet weak var menuBar:UIView!
     @IBOutlet weak var bottomRightBarButton:UIBarButtonItem!
     @IBOutlet weak var toolBar:UIToolbar!
+    @IBOutlet weak var editButton:UIBarButtonItem!
+    @IBOutlet weak var findPlaceButton:UIButton!
 
     var entry: Entry!
     var wrapVisible: Bool!
@@ -36,10 +38,11 @@ class ViewEntryViewController: UIViewController, MKMapViewDelegate, UITableViewD
         
         mapView.delegate = self
         mapFrame = mapView.frame
+
+        findPlaceButton.setTitle("Find places in \(entry.title)", forState: .Normal)
         
+        mapView.layoutMargins = UIEdgeInsetsMake(100, 0, +50, 0)
         
-        
-        //mapView.layoutMargins = UIEdgeInsetsMake(0, 0, -20, 0)
         menuBar.layer.borderWidth = 1
         menuBar.layer.borderColor = UIColor.lightGrayColor().CGColor
         
@@ -48,21 +51,13 @@ class ViewEntryViewController: UIViewController, MKMapViewDelegate, UITableViewD
         let address = entry?.title
         zoomToLocation(address!)
         
-        let swipeUp = UISwipeGestureRecognizer(target: self, action: "swipeUp:")
-        swipeUp.direction = .Up
-        swipeUp.delegate = self
-        menuBar.addGestureRecognizer(swipeUp)
-        let swipeUp2 = UISwipeGestureRecognizer(target: self, action: "swipeUp:")
-        swipeUp2.direction = .Up
-        swipeUp2.delegate = self
-        toolBar.addGestureRecognizer(swipeUp2)
+        if entry.places.count == 0 {
+            editButton.title = ""
+        } else {
+            editButton.title = "Edit"
+        }
         
-        let swipeDown = UISwipeGestureRecognizer(target: self, action: "swipeDown:")
-        swipeDown.direction = .Down
-        swipeDown.delegate = self
-        menuBar.addGestureRecognizer(swipeDown)
-        
-        
+
         
         fetchAllPlaces()
     }
@@ -82,10 +77,7 @@ class ViewEntryViewController: UIViewController, MKMapViewDelegate, UITableViewD
         
         let places = fetchedPlacesController.fetchedObjects as! [Place]
         
-        if fetchedPlacesController.fetchedObjects?.isEmpty == nil {
-            zoomToLocation((entry?.title)!)
-        }
-        
+      
         if !mapView.annotations.isEmpty {
             mapView.removeAnnotations(mapView.annotations)
         }
@@ -113,72 +105,6 @@ class ViewEntryViewController: UIViewController, MKMapViewDelegate, UITableViewD
         CoreDataStackManager.sharedInstance().saveContext()
     }
     
-    
-    
-
-    func swipeUp(sender: UIGestureRecognizer){
-        if mapOpen == true {
-            openMap(false)
-        }
-    }
-    
-    func swipeDown(sender: UIGestureRecognizer){
-        if mapOpen == false {
-            openMap(true)
-        }
-    }
-    
-    func mapView(mapView: MKMapView, regionWillChangeAnimated animated: Bool) {
-        let userChange = mapViewRegionDidChangeFromUserInteraction()
-        if userChange {
-            openMap(true)
-        }
-    }
-
-    
-    func mapViewRegionDidChangeFromUserInteraction() -> Bool {
-        let view = self.mapView.subviews[0]
-        //  Look through gesture recognizers to determine whether this region change is from user interaction
-        if let gestureRecognizers = view.gestureRecognizers {
-            for recognizer in gestureRecognizers {
-                if( recognizer.state == UIGestureRecognizerState.Began || recognizer.state == UIGestureRecognizerState.Ended ) {
-                    return true
-                }
-            }
-        }
-        return false
-    }
-
-
-
-    func openMap(doOpen:Bool){
-
-        if doOpen == true {
-            if mapOpen == false {
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
-                var frame = self.view.frame
-                frame.origin.x = self.mapView.frame.origin.x
-                self.origin = self.mapView.frame.origin.x
-                self.mapView.frame = frame
-                self.mapView.center = self.view.center
-                self.tableView.frame.origin.y += 324
-                self.menuBar.frame.origin.y += 324
-                self.mapOpen = true
-            })
-            }
-        } else {
-            UIView.animateWithDuration(0.3, animations: { () -> Void in
-                self.mapView.frame = self.mapFrame
-                self.mapView.center = self.view.center
-                self.mapView.frame.origin.y -= 152
-                self.tableView.frame.origin.y -= 324
-                self.menuBar.frame.origin.y -= 324
-                self.mapOpen = false
-            })
-        }
-        
-    }
- 
 
  
     
@@ -207,14 +133,7 @@ class ViewEntryViewController: UIViewController, MKMapViewDelegate, UITableViewD
         }
     }
     
-//    @IBAction func launchPhotoBrowser()
-//    {
-//        let photoBrowserViewController = PhotoBrowserViewController()
-//        
-//        photoBrowserViewController.delegate = self
-//        
-//        photoBrowserViewController.launch(size: CGSize(width: view.frame.width - 100, height: view.frame.height - 100), view: view)
-//    }
+
     
     @IBAction func didPressFindPlacesButton(){
         let vc = storyboard?.instantiateViewControllerWithIdentifier("FindPlacesViewController") as! FindPlacesViewController
@@ -238,13 +157,9 @@ class ViewEntryViewController: UIViewController, MKMapViewDelegate, UITableViewD
             let longitude = placemark.location!.coordinate.longitude
             //let location = CLLocation(latitude: latitude, longitude: longitude)
             
-            let span = MKCoordinateSpanMake(0.10, 0.10)
+            let span = MKCoordinateSpanMake(0.05, 0.05)
             let region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: latitude, longitude: longitude), span: span)
-            if ((fetchedPlacesController.fetchedObjects?.isEmpty) == nil) {
-                mapView.setRegion(region, animated: true)
-            } else {
-                mapView.setRegion(region, animated: false)
-            }
+            mapView.setRegion(region, animated: false)
         }
     }
     
@@ -270,7 +185,8 @@ class ViewEntryViewController: UIViewController, MKMapViewDelegate, UITableViewD
         button.frame = tempButton.frame
         button.setImage(UIImage(named: "arrow"), forState: .Normal)
         annotationView!.rightCalloutAccessoryView = button
-        annotationView!.pinTintColor = UIColor.purpleColor()
+        let place = annotation as! Place
+        annotationView!.pinTintColor = calculateColor(place.rating)
         
         return annotationView
     }
@@ -281,13 +197,27 @@ class ViewEntryViewController: UIViewController, MKMapViewDelegate, UITableViewD
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("Cell")  as UITableViewCell!
+        let cell = tableView.dequeueReusableCellWithIdentifier("Cell")  as! PlaceCell
         
         let place = fetchedPlacesController.objectAtIndexPath(indexPath) as! Place
         
         let title = place.name
+        cell.colorTab.backgroundColor = calculateColor(place.rating)
+        //let slider = RatingSlider()
+        //cell.colorTab.backgroundColor = slider.getColor(place.rating)
+        cell.ratingLabel.text = "\(place.rating)/10"
         print(title)
         cell.textLabel?.text = title
+        
+        if entry.places.count > 0 {
+            if tableView.editing == true {
+                editButton.title = "Done"
+            } else {
+                editButton.title = "Edit"
+            }
+
+     
+        }
         
         return cell
     }
@@ -297,7 +227,8 @@ class ViewEntryViewController: UIViewController, MKMapViewDelegate, UITableViewD
     */
     lazy var fetchedPlacesController: NSFetchedResultsController = {
         let fetchRequest = NSFetchRequest(entityName: "Place")
-        fetchRequest.sortDescriptors = []
+        let sortDescriptor1 = NSSortDescriptor(key: "rating", ascending: false)
+        fetchRequest.sortDescriptors = [sortDescriptor1]
         fetchRequest.predicate = NSPredicate(format: "entry == %@", self.entry)
         let fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest,
             managedObjectContext: self.sharedContext,
@@ -340,9 +271,12 @@ class ViewEntryViewController: UIViewController, MKMapViewDelegate, UITableViewD
         let place = fetchedPlacesController.objectAtIndexPath(indexPath) as! Place
         
         let span = MKCoordinateSpanMake(0.01, 0.01)
-        let region = MKCoordinateRegion(center: place.coordinate, span: span)
+        let center = place.coordinate
+        let region = MKCoordinateRegion(center: center, span: span)
         mapView.setRegion(region, animated: true)
         mapView.selectAnnotation(place, animated: true)
+        
+        print(place.rating)
     }
     
     func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
@@ -356,17 +290,52 @@ class ViewEntryViewController: UIViewController, MKMapViewDelegate, UITableViewD
             saveContext()
             mapView.removeAnnotation(place)
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Top)
+            if tableView.editing == true {
+                editButton.title = "Done"
+            }
+            tableView.reloadData()
         }
+        
     }
-
+    
+   
     
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         let vc = storyboard?.instantiateViewControllerWithIdentifier("ViewPlaceViewController") as! ViewPlaceViewController
         
         let place = view.annotation as! Place
+        print(place)
         vc.place = place
+        saveContext()
         navigationController?.pushViewController(vc, animated: true)
 
+    }
+    
+    @IBAction func didTouchEditButton(){
+        if editButton.title == "Edit" {
+            tableView.editing = true
+            editButton.title = "Done"
+        } else {
+            tableView.editing = false
+            editButton.title = "Edit"
+        }
+
+    }
+    
+    
+    func calculateColor(value: Int) -> UIColor{
+       
+        if value >= 5 {
+            print("value: \(value)")
+            let ratingPercent = ((100 - (Double(Double(value)/10.0) * 100)) * 0.01) * 255 * 2
+            print ("rating percent: \(ratingPercent)")
+            let color = UIColor(red: CGFloat(ratingPercent/255), green: 1, blue: 0, alpha: 1)
+            return color
+        } else {
+            let ratingPercent = (Double(value)/10.0)
+            let color = UIColor(red: 1, green: CGFloat(ratingPercent*255)/255, blue: 0, alpha: 1)
+            return color
+        }
     }
     
 }

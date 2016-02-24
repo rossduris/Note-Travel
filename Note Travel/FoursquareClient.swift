@@ -33,14 +33,12 @@ class FoursquareClient: NSObject {
             "client_secret": CLIENT_SECRET
         ]
         
+        let method = "search"
         
-        Alamofire.request(.GET, BASE_URL + "search", parameters: parameters)
+        
+        Alamofire.request(.GET, BASE_URL + method, parameters: parameters)
             .responseJSON { response in
-//                print(response.request)  // original URL request
-//                print(response.response) // URL response
-//                print(response.data)     // server data
-//                print(response.result)   // result of response serialization
-//                
+                
                 if let JSON = response.result.value {                    
                         completionHandler(success: true, data: JSON)
                 }
@@ -56,7 +54,10 @@ class FoursquareClient: NSObject {
             "client_secret": CLIENT_SECRET
         ]
         
-        Alamofire.request(.GET, BASE_URL + "\(venueId)/photos", parameters: parameters)
+        let method = "\(venueId)/photos"
+        
+        
+        Alamofire.request(.GET, BASE_URL + method, parameters: parameters)
             .responseJSON { response in
                 
                 if let JSON = response.result.value {

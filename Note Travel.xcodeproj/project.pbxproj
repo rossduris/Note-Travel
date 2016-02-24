@@ -27,6 +27,8 @@
 		0DD54A0F1C3DE81400C3473B /* Note_TravelUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD54A0E1C3DE81400C3473B /* Note_TravelUITests.swift */; };
 		0DD54A1F1C48592900C3473B /* CoreDataStackManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD54A1E1C48592900C3473B /* CoreDataStackManager.swift */; };
 		0DD54A211C48597C00C3473B /* Entry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD54A201C48597B00C3473B /* Entry.swift */; };
+		0DFA9E271C7C5020002F0367 /* RatingSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFA9E261C7C5020002F0367 /* RatingSlider.swift */; };
+		0DFA9E291C7CF94F002F0367 /* PlaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DFA9E281C7CF94F002F0367 /* PlaceCell.swift */; };
 		9843B8F8E9A62E7E3FB37CCE /* Pods_Note_Travel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 928BE4E7BF09FCF763BBB3EA /* Pods_Note_Travel.framework */; };
 /* End PBXBuildFile section */
 
@@ -83,6 +85,8 @@
 		0DD54A101C3DE81400C3473B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0DD54A1E1C48592900C3473B /* CoreDataStackManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CoreDataStackManager.swift; sourceTree = "<group>"; };
 		0DD54A201C48597B00C3473B /* Entry.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entry.swift; sourceTree = "<group>"; };
+		0DFA9E261C7C5020002F0367 /* RatingSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RatingSlider.swift; sourceTree = "<group>"; };
+		0DFA9E281C7CF94F002F0367 /* PlaceCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PlaceCell.swift; sourceTree = "<group>"; };
 		68EBF90D908BC5F59A3DB1AB /* Pods-Note Travel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Note Travel.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Note Travel/Pods-Note Travel.debug.xcconfig"; sourceTree = "<group>"; };
 		928BE4E7BF09FCF763BBB3EA /* Pods_Note_Travel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Note_Travel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B3198B1FF12C66C6ACC3E28E /* Pods-Note Travel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Note Travel.release.xcconfig"; path = "Pods/Target Support Files/Pods-Note Travel/Pods-Note Travel.release.xcconfig"; sourceTree = "<group>"; };
@@ -150,7 +154,9 @@
 			isa = PBXGroup;
 			children = (
 				0DD119C51C6BF3CF00B2EAB4 /* SearchCell.swift */,
+				0DFA9E281C7CF94F002F0367 /* PlaceCell.swift */,
 				0DD119C11C6AFE2A00B2EAB4 /* EntryCell.swift */,
+				0DFA9E261C7C5020002F0367 /* RatingSlider.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -439,12 +445,14 @@
 				0DD549F41C3DE81300C3473B /* Note_Travel.xcdatamodeld in Sources */,
 				0DB981D91C72C7BD003D0034 /* ViewPlaceViewController.swift in Sources */,
 				0DB981DF1C73A0BD003D0034 /* Place.swift in Sources */,
+				0DFA9E271C7C5020002F0367 /* RatingSlider.swift in Sources */,
 				0DD119C81C6D256A00B2EAB4 /* ViewEntryViewController.swift in Sources */,
 				0DD119CA1C6DEBF400B2EAB4 /* FindPlacesViewController.swift in Sources */,
 				0DB982081C7BE861003D0034 /* ImageCache.swift in Sources */,
 				0DB981E31C742C81003D0034 /* Photo.swift in Sources */,
 				0DD54A1F1C48592900C3473B /* CoreDataStackManager.swift in Sources */,
 				0DD549EC1C3DE81300C3473B /* AppDelegate.swift in Sources */,
+				0DFA9E291C7CF94F002F0367 /* PlaceCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

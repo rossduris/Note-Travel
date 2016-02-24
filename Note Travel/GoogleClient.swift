@@ -14,6 +14,8 @@ class GoogleClient: NSObject {
     let API_KEY = "AIzaSyCbdkg0q6Hq7BdfRexcBCzBN2U5bbCwWcQ"
     let BASE_URL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?"
     let PLACE_SEARCH = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?rankby=distance"
+    let PLACE_DETAILS = "https://maps.googleapis.com/maps/api/place/details/json?"
+    let PLACE_PHOTO = "https://maps.googleapis.com/maps/api/place/photo?"
     let PLACE_ADD = "https://maps.googleapis.com/maps/api/place/add/json?"
     
     
@@ -23,27 +25,6 @@ class GoogleClient: NSObject {
             "key": API_KEY,
             "input": searchString,
             "types": "(cities)"
-            ])
-            .responseJSON { response in
-//                print(response.request)  // original URL request
-//                print(response.response) // URL response
-//                print(response.data)     // server data
-//                print(response.result)   // result of response serialization
-                
-                if let JSON = response.result.value {
-                    dispatch_async(dispatch_get_main_queue()) {
-                        completionHandler(success: true, data: JSON)
-                    }
-                    
-                }
-        }
-    }
-    
-    func searchForNearbyPlaces(keyword: String, location: CLLocation, completionHandler: (success: Bool, data:AnyObject) -> Void) {
-        Alamofire.request(.GET, PLACE_SEARCH, parameters: [
-            "key": API_KEY,
-            "location": "\(location.coordinate.latitude),\(location.coordinate.longitude)",
-            "keyword": keyword
             ])
             .responseJSON { response in
 
@@ -56,6 +37,9 @@ class GoogleClient: NSObject {
                 }
         }
     }
+    
+ 
+    
     
     /* Shared Instance */
     class func sharedInstance() -> GoogleClient {

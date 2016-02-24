@@ -15,6 +15,7 @@ class Place: NSManagedObject, MKAnnotation {
     @NSManaged var name: String!
     @NSManaged var latitude: Double
     @NSManaged var longitude: Double
+    @NSManaged var rating: Int
     @NSManaged var id: String!
     @NSManaged var entry: Entry?
     @NSManaged var photos: [Photo]
@@ -44,6 +45,7 @@ class Place: NSManagedObject, MKAnnotation {
         name = dictionary["name"] as? String
         latitude = dictionary["latitude"] as! Double
         longitude = dictionary["longitude"] as! Double
+        rating = dictionary["rating"] as! Int
         id = dictionary["id"] as! String
     }
     
