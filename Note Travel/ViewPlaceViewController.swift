@@ -71,10 +71,10 @@ class ViewPlaceViewController: SharedViewController, NSFetchedResultsControllerD
     func didLoadImage(notification: NSNotification) {
 
         print("ImageLoadedNotification")
-        self.photoTipLabel.hidden = false
-        self.noPhotosLabel.hidden = true
-        self.activityIndicator.stopAnimating()
-        self.activityIndicator.hidden = true
+        photoTipLabel.hidden = false
+        noPhotosLabel.hidden = true
+        activityIndicator.stopAnimating()
+        activityIndicator.hidden = true
     }
     
     func loadRandomPhoto(){
@@ -92,9 +92,9 @@ class ViewPlaceViewController: SharedViewController, NSFetchedResultsControllerD
     
     func downloadImages() {
         if place.photos.isEmpty {
-            self.noPhotosLabel.hidden = false
-            self.noPhotosLabel.text = "Loading Photos"
-            FoursquareClient.sharedInstance().downloadPhotos(place.id, entry: self.place.entry!, place: self.place! ) { (success, photos, error) in
+            noPhotosLabel.hidden = false
+            noPhotosLabel.text = "Loading Photos"
+            FoursquareClient.sharedInstance().downloadPhotos(place.id, entry: place.entry!, place: place! ) { (success, photos, error) in
                 if success {
                     self.topImageView.image = photos.first?.image
                 } else {
@@ -113,8 +113,8 @@ class ViewPlaceViewController: SharedViewController, NSFetchedResultsControllerD
                 }
             }
         } else  {
-            let photo = self.fetchedPhotosController.fetchedObjects?.first as! Photo
-            self.topImageView.image = photo.image
+            let photo = fetchedPhotosController.fetchedObjects?.first as! Photo
+            topImageView.image = photo.image
         }
     }
     
@@ -245,7 +245,7 @@ class ViewPlaceViewController: SharedViewController, NSFetchedResultsControllerD
         } else {
             editButton.title = ""
             savedRatingLabel.hidden = true
-            self.navigationItem.backBarButtonItem?.enabled = false
+            navigationItem.backBarButtonItem?.enabled = false
             subLabel.text = place.name + "?"
             
         }

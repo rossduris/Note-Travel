@@ -10,11 +10,6 @@ import UIKit
 
 class SharedViewController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
 
     func alertError(message: String, viewController: UIViewController) {
         dispatch_async(dispatch_get_main_queue()) {

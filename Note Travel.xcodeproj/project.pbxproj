@@ -132,6 +132,8 @@
 		0DB981DD1C739CF4003D0034 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				0DD549F21C3DE81300C3473B /* Note_Travel.xcdatamodeld */,
+				0DB981DC1C739CCE003D0034 /* API */,
 				0DD54A1E1C48592900C3473B /* CoreDataStackManager.swift */,
 				0DB982071C7BE861003D0034 /* ImageCache.swift */,
 				0DD54A201C48597B00C3473B /* Entry.swift */,
@@ -202,13 +204,11 @@
 				0DB981DD1C739CF4003D0034 /* Model */,
 				0DB981E11C73BA1B003D0034 /* View */,
 				0DB981E01C73B9DF003D0034 /* Controller */,
-				0DB981DC1C739CCE003D0034 /* API */,
 				0DD549EF1C3DE81300C3473B /* Main.storyboard */,
 				0DD549F51C3DE81300C3473B /* Assets.xcassets */,
 				0DD549F71C3DE81300C3473B /* LaunchScreen.storyboard */,
 				0DD549FA1C3DE81300C3473B /* Info.plist */,
 				0DB982001C74E4BF003D0034 /* Note Travel-Bridging-Header.h */,
-				0DD549F21C3DE81300C3473B /* Note_Travel.xcdatamodeld */,
 			);
 			path = "Note Travel";
 			sourceTree = "<group>";

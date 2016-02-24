@@ -9,7 +9,7 @@
 import UIKit
 import CoreData
 
-class EntryTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate, UITextFieldDelegate, UISearchBarDelegate {
+class EntryTableViewController: SharedViewController, UITableViewDataSource, UITableViewDelegate, NSFetchedResultsControllerDelegate, UIGestureRecognizerDelegate, UITextFieldDelegate, UISearchBarDelegate {
     
     @IBOutlet weak var travelTableView: UITableView!
 
@@ -128,6 +128,7 @@ class EntryTableViewController: UIViewController, UITableViewDataSource, UITable
                 self.loading(false)
             } else {
                 print(error!)
+                self.alertError(error!, viewController: self)
             }
         }
         

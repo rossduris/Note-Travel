@@ -74,7 +74,6 @@ class ViewEntryViewController: SharedViewController, MKMapViewDelegate, UITableV
         
         geocoder.geocodeAddressString(address) { (placemarks, error) -> Void in
             if error != nil {
-                //self.toggleLoading(false, indicator: self.geoActivityIndicator, view: self.view)
                 if error!.localizedDescription.rangeOfString("2") != nil{
                     self.alertError("The operation could not be completed.", viewController: self)
                    self.navigationController?.popViewControllerAnimated(true)
