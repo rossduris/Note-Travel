@@ -14,7 +14,6 @@
 		0DB982081C7BE861003D0034 /* ImageCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DB982071C7BE861003D0034 /* ImageCache.swift */; };
 		0DD119C01C67E77400B2EAB4 /* GoogleClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD119BF1C67E77400B2EAB4 /* GoogleClient.swift */; };
 		0DD119C21C6AFE2A00B2EAB4 /* EntryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD119C11C6AFE2A00B2EAB4 /* EntryCell.swift */; };
-		0DD119C61C6BF3CF00B2EAB4 /* SearchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD119C51C6BF3CF00B2EAB4 /* SearchCell.swift */; };
 		0DD119C81C6D256A00B2EAB4 /* ViewEntryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD119C71C6D256A00B2EAB4 /* ViewEntryViewController.swift */; };
 		0DD119CA1C6DEBF400B2EAB4 /* FindPlacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD119C91C6DEBF400B2EAB4 /* FindPlacesViewController.swift */; };
 		0DD549EC1C3DE81300C3473B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0DD549EB1C3DE81300C3473B /* AppDelegate.swift */; };
@@ -63,11 +62,9 @@
 		0DB981F01C74CE4B003D0034 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		0DB981F31C74CF57003D0034 /* Pods_Note_Travel.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods_Note_Travel.framework; path = "Pods/../build/Debug-iphoneos/Pods_Note_Travel.framework"; sourceTree = "<group>"; };
 		0DB981F51C74CF82003D0034 /* Pods.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Pods.framework; path = "../../../Library/Developer/Xcode/DerivedData/Yelp-bxtniongdmkwaffeqxfoirqlskhl/Build/Products/Debug-iphoneos/Pods.framework"; sourceTree = "<group>"; };
-		0DB982001C74E4BF003D0034 /* Note Travel-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Note Travel-Bridging-Header.h"; sourceTree = "<group>"; };
 		0DB982071C7BE861003D0034 /* ImageCache.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageCache.swift; sourceTree = "<group>"; };
 		0DD119BF1C67E77400B2EAB4 /* GoogleClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoogleClient.swift; sourceTree = "<group>"; };
 		0DD119C11C6AFE2A00B2EAB4 /* EntryCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EntryCell.swift; sourceTree = "<group>"; };
-		0DD119C51C6BF3CF00B2EAB4 /* SearchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchCell.swift; sourceTree = "<group>"; };
 		0DD119C71C6D256A00B2EAB4 /* ViewEntryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewEntryViewController.swift; sourceTree = "<group>"; };
 		0DD119C91C6DEBF400B2EAB4 /* FindPlacesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FindPlacesViewController.swift; sourceTree = "<group>"; };
 		0DD549E81C3DE81300C3473B /* Note Travel.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Note Travel.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -146,10 +143,10 @@
 		0DB981E01C73B9DF003D0034 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				0DFA9E2A1C7DB615002F0367 /* SharedViewController.swift */,
 				0DD549ED1C3DE81300C3473B /* EntryTableViewController.swift */,
 				0DD119C71C6D256A00B2EAB4 /* ViewEntryViewController.swift */,
 				0DD119C91C6DEBF400B2EAB4 /* FindPlacesViewController.swift */,
-				0DFA9E2A1C7DB615002F0367 /* SharedViewController.swift */,
 				0DB981D81C72C7BD003D0034 /* ViewPlaceViewController.swift */,
 			);
 			name = Controller;
@@ -158,7 +155,6 @@
 		0DB981E11C73BA1B003D0034 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				0DD119C51C6BF3CF00B2EAB4 /* SearchCell.swift */,
 				0DFA9E281C7CF94F002F0367 /* PlaceCell.swift */,
 				0DD119C11C6AFE2A00B2EAB4 /* EntryCell.swift */,
 				0DFA9E261C7C5020002F0367 /* RatingSlider.swift */,
@@ -208,7 +204,6 @@
 				0DD549F51C3DE81300C3473B /* Assets.xcassets */,
 				0DD549F71C3DE81300C3473B /* LaunchScreen.storyboard */,
 				0DD549FA1C3DE81300C3473B /* Info.plist */,
-				0DB982001C74E4BF003D0034 /* Note Travel-Bridging-Header.h */,
 			);
 			path = "Note Travel";
 			sourceTree = "<group>";
@@ -440,7 +435,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				0DD54A211C48597C00C3473B /* Entry.swift in Sources */,
-				0DD119C61C6BF3CF00B2EAB4 /* SearchCell.swift in Sources */,
 				0DD119C21C6AFE2A00B2EAB4 /* EntryCell.swift in Sources */,
 				0DD119C01C67E77400B2EAB4 /* GoogleClient.swift in Sources */,
 				0DD549EE1C3DE81300C3473B /* EntryTableViewController.swift in Sources */,
@@ -607,7 +601,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "io.duris.Note-Travel";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Note Travel/Note Travel-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -625,7 +619,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "io.duris.Note-Travel";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "Note Travel/Note Travel-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Release;
 		};

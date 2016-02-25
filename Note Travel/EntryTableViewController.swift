@@ -19,8 +19,7 @@ class EntryTableViewController: SharedViewController, UITableViewDataSource, UIT
     @IBOutlet weak var newEntryButtonWrapper:UIView!
     @IBOutlet weak var editBarButton:UIBarButtonItem!
     @IBOutlet weak var refreshButton:UIBarButtonItem!
-    var loading = false
-    var searchController: UISearchController!
+
     var searchResults = [AnyObject]()
     var wrapVisible: Bool!
     @IBOutlet weak var activityIndicator:UIActivityIndicatorView!

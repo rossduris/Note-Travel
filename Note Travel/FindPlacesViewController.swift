@@ -118,10 +118,11 @@ class FindPlacesViewController: SharedViewController, MKMapViewDelegate, UISearc
     }
     
     func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-    
-        
+     
         mapView.removeAnnotations(mapView.annotations)
         tempResults.removeAll()
+        
+        tableView.reloadData()
         
         let placemark = placemarks[0] as CLPlacemark
         let latitude = placemark.location?.coordinate.latitude
@@ -130,11 +131,8 @@ class FindPlacesViewController: SharedViewController, MKMapViewDelegate, UISearc
         activityIndicator.startAnimating()
         
         if searchBar.text == ""{
-            
-            tempResults.removeAll()
             tableView.reloadData()
         }
-        
         
         activityIndicator.startAnimating()
         activityIndicator.hidden = false
@@ -147,13 +145,11 @@ class FindPlacesViewController: SharedViewController, MKMapViewDelegate, UISearc
             } else {
                 print(error!)
                 self.alertError(error!, viewController: self)
-                
-                
+                self.activityIndicator.stopAnimating()
+                self.activityIndicator.hidden = true
             }
         }
     }
-    
-  
     
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
         tableView.hidden = true
@@ -191,7 +187,6 @@ class FindPlacesViewController: SharedViewController, MKMapViewDelegate, UISearc
         tableView.hidden = false
     }
 
-    
     @IBAction func didTouchShowMapButton() {
         showListButton.hidden = false
         showMapButton.hidden = true
@@ -256,8 +251,6 @@ class FindPlacesViewController: SharedViewController, MKMapViewDelegate, UISearc
             place.entry = entry
             vc.place = place
         }
-      
-        
         
         navigationController?.pushViewController(vc, animated: true)
     }

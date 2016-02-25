@@ -1,5 +1,5 @@
 <!-- Welcome to Note Travel! -->
-To start using Note Travel simple tap the "Add New Entry" button.
+To start using Note Travel simply tap the "Add New Entry" button.
 Search for a city you've traveled to or are currently in and select it.
 
 <!-- Finding a New Place -->

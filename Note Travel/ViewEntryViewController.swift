@@ -87,11 +87,9 @@ class ViewEntryViewController: SharedViewController, MKMapViewDelegate, UITableV
             }
         }
     }
-    //Completion handler for the geocoder
+
     func geocodingCompleted(placemarks:[CLPlacemark]?) {
-        //Stop loading
-        //toggleLoading(false, indicator: geoActivityIndicator, view: view)
-        
+
         if let placemark = placemarks?[0] as CLPlacemark! {
             //Save the location
             let latitude = placemark.location!.coordinate.latitude

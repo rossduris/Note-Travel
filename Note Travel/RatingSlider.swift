@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Foundation
 
 class RatingSlider: UIControl {
     
@@ -17,10 +16,10 @@ class RatingSlider: UIControl {
     @IBOutlet weak var sliderOutline: UIImageView!
     var ratingNumber = 0
     
+
     override func beginTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
         return true
     }
-
     
     override func continueTrackingWithTouch(touch: UITouch, withEvent event: UIEvent?) -> Bool {
         print(touch.locationInView(touch.view))
@@ -100,8 +99,7 @@ class RatingSlider: UIControl {
         
    
         return true
-    }
-    
+    }    
    
     override func endTrackingWithTouch(touch: UITouch?, withEvent event: UIEvent?) {
         true

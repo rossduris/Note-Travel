@@ -151,7 +151,7 @@ class FoursquareClient: NSObject {
                                             photo.entry = entry
                                             photo.place = place
                                             photo.downloadImage()
-                                            self.saveContext()
+                                                self.saveContext()
                                             
                                             var downloadedPhotos = [Photo]()
                                             downloadedPhotos.append(photo)
