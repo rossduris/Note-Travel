@@ -64,6 +64,14 @@ class FoursquareClient: NSObject {
                     })
                 } else {
                     if let JSON = response.result.value {
+                        if let meta = JSON["meta"] as? [String: AnyObject] {
+                            print(meta["code"])
+                            if meta["code"] as? Int == 400 {
+                                dispatch_async(dispatch_get_main_queue(), {
+                                    completionHandler(success: false, places:[], error: "There seems to be an error with the server.")
+                                })
+                            }
+                        }
                         if let response = JSON["response"] as? [String: AnyObject]  {
                             if let venues = response["venues"] {
                                 for venue in (venues as? NSArray)! {

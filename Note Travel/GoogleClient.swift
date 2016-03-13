@@ -23,13 +23,20 @@ class GoogleClient: NSObject {
             "types": "(cities)"
             ])
             .responseJSON { response in
+                print(response)
                 if response.result.error != nil {
                     let error = response.result.error!.localizedDescription
                     dispatch_async(dispatch_get_main_queue(), {
                         completionHandler(success: false, results: [], error: error)
                     })
-                } else {
+                }else {
+                    
                     if let JSON = response.result.value {
+                        if JSON["error_message"] as? String != nil {
+                            dispatch_async(dispatch_get_main_queue(), {
+                                completionHandler(success: false, results: [], error: "There seems to be an error with the server.")
+                            })
+                        }
                     if let predictions = JSON["predictions"]{
                         var resultStrings = [String]()
                         for prediction in (predictions as? NSArray)!{
@@ -38,6 +45,7 @@ class GoogleClient: NSObject {
                             resultStrings.append(string as! String)
                         }
                         dispatch_async(dispatch_get_main_queue(), {
+                            //let JSON["error_message"]
                             completionHandler(success: true, results: resultStrings, error: nil)
                         })
                     }

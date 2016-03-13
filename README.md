@@ -13,8 +13,8 @@ You will find edit buttons throughout the app to assist in editing and deleting 
 Tapping on the photo while viewing a place will randomly select a new image.
 
 <!-- Refresh Entry Photos -->
-Hitting the refresh button on the Entry table page will select a random photo from it's photos that have been
-downloaded with the places. Only photos with places of a rating above 6 will be shown on the Entry table page.
+Hitting the refresh button on the Entry table page will select a random photo from its photos that have been
+downloaded with the places. Only photos with places with a rating above 6 will be shown on the Entry table page.
 
 <!-- Viewing an Entry -->
 Selecting a table row while viewing an entry will zoom into the place on the map and select it. Tapping the 

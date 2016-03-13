@@ -126,7 +126,7 @@ class EntryTableViewController: SharedViewController, UITableViewDataSource, UIT
                 self.searchResultsTableView.reloadData()
                 self.loading(false)
             } else {
-                print(error!)
+                print(error)
                 self.alertError(error!, viewController: self)
             }
         }
