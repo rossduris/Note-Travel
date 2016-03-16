@@ -11,11 +11,9 @@ import Alamofire
 class GoogleClient: NSObject {
     
     let API_KEY = "AIzaSyCbdkg0q6Hq7BdfRexcBCzBN2U5bbCwWcQ"
-    let BASE_URL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?"
-    
+    let BASE_URL = "https://maps.googleapis.com/maps/api/place/autocomplete/json?"    
     
     func searchForCities(searchString: String, completionHandler: (success: Bool, results:[String], error: String?) -> Void) {
-
         
         Alamofire.request(.GET, BASE_URL, parameters: [
             "key": API_KEY,
