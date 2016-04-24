@@ -18,7 +18,7 @@ class GoogleClient: NSObject {
         Alamofire.request(.GET, BASE_URL, parameters: [
             "key": API_KEY,
             "input": searchString,
-            "types": "(cities)"
+            "types": "(regions)"
             ])
             .responseJSON { response in
                 print(response)
