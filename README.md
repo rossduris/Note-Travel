@@ -1,5 +1,5 @@
 # Note Travel
-Note Travel is an iOS app designed to easily keep track of places around the world and recreate the travel experience. This app was built as my final project for the [Udacity iOS Developer nanodegree](https://www.udacity.com/nanodegree). 
+Note Travel is an iOS app designed to easily keep track of places around the world and recreate the travel experience. This app was built as my final project for the Udacity's iOS bootcamp. [NoteTravel in AppStore](https://apps.apple.com/us/app/note-travel/id1107345692). 
 
 ## Installation
 `git clone https://github.com/duris/Note-Travel`
